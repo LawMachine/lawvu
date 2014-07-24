@@ -1,0 +1,22 @@
+<div class="tabbable">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#1" data-toggle="tab">My Matters</a></li>
+    <li><a href="#2" data-toggle="tab">My Tasks</a></li>
+    <li><a href="#3" data-toggle="tab">Messages</a></li>
+    <li><a href="#4" data-toggle="tab">Recent Documents</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="1">
+      <%= render :partial=>"matters/#{current_user.roleable_type.downcase}_matters", :locals=>{:matters=>@matters} %>
+    </div>
+    <div class="tab-pane" id="2">
+      <p>This section will show assigned tasks</p>
+    </div>
+    <div class="tab-pane" id="3">
+      <p>This section will show messages</p>
+    </div>
+    <div class="tab-pane" id="4">
+      <p>This section will show recent documents</p>
+    </div>
+  </div>
+</div>

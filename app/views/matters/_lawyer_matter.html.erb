@@ -1,0 +1,69 @@
+<h2>New Matter</h2>
+
+<%= simple_form_for(@matter) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :client_id, autofocus: true, :label=>"Choose your Client (Enter their name or email address)" %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :case_type, :as=>"select", :collection=>JSON.parse(ENV["CASE_TYPE"]) %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :issue, :label=>"Describe the issue as conveyed by the client" %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :help_given_by_lawyer, :label=>"Tell your client what you will do for them" %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :fee_arrangement_by_lawyer, :as=>"radio_buttons", :collection=>JSON.parse(ENV["FEE_ARRANGEMENT"]), :label=>"Suggest a fee arrangement is" %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :fee_arrangement_suggestion, :label=>"Explain your suggested fee arrangement" %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :fixed_fee_amount %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :lawyer_reference, :label=>"Your internal reference (optional - eg: Matter code for in house practice management platform)" %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :expected_completion_date %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :bill_frequency, :as=>"radio_buttons", :collection=>JSON.parse(ENV["BILL_FREQUENCY"]), :label=>"How will you bill your client?" %>
+  </div>
+  
+  <div class="form-actions">
+    <%= f.button :submit, "Submit" %>
+  </div>
+<% end %>
+
+<%= javascript_tag do %>
+  $(function() {
+    $("#matter_client_id").tokenInput("/profiles/search_clients.json", {
+      propertyToSearch : "email_with_name",
+      crossDomain: false,
+      prePopulate: $("#matter_client_id").data("load"),
+      theme: "facebook",
+      preventDuplicates: false,
+      tokenValue: "email_with_name",
+      tokenLimit: 1,
+      onAdd: function (item) {
+        $("#matter_client_id").val(item.id);
+      },
+      onDelete: function (item) {
+        $("#matter_client_id").val("");
+      }
+   });
+  });
+<% end %>

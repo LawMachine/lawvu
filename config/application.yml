@@ -1,0 +1,10 @@
+FEE_ARRANGEMENT: ["Fixed Fee (Flat rate regardless of how long it takes)","Estimated Fee (This may change however it must be discussed and agreed to before work continues)","Contingency (a percentage of an award or settlement)"]
+BILL_FREQUENCY: ["On Completion","On a monthly basis (A fixed amount)","On a monthly basis (A variable amount based on the work done in the month)","At certain milestones (based on tasks completed)"]
+CASE_TYPE: ["case type 1","case type 2","case type 3","case type 4"]
+MATTER_STATUS: ["waiting for lawyer acceptance","waiting for client acceptance","accepted","rejected"]
+
+LAWVU_MAILER_USERNAME: 'postmaster@idifysolutions.com'
+LAWVU_MAILER_PWD: '7or9v71rc410'
+LAWVU_MAILER_ADDRESS: 'smtp.mailgun.org'
+LAWVU_MAILER_DOMAIN: '96.126.98.180'
+LAWVU_MAILER_SENDER: "TracerR <admin@tracerr.com>"

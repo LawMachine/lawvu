@@ -1,0 +1,57 @@
+<h2>New Matter</h2>
+
+<%= simple_form_for(@matter) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :lawyer_id, autofocus: true, :label=>"Choose your Lawyer (Enter their name or email address)" %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :issue, :label=>"Describe the issue" %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :help_asked_by_client, :label=>"Tell your provider exactly how you would like them to help" %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :fee_arrangement_by_client, :as=>"radio_buttons", :collection=>JSON.parse(ENV["FEE_ARRANGEMENT"]), :label=>"Your preferred fee arrangement is" %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :budget, :label=>"Your budget for this matter (optional)" %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :client_reference, :label=>"Your reference (optional - eg: purchase order #" %>
+  </div>
+  
+  <div class="form-inputs">
+    <%= f.input :timeframe, :label=>"Timeframe (Remember that it is justifiable for lawyer to charge premium fees on urgent matters)" %>
+  </div>
+  
+  <div class="form-actions">
+    <%= f.button :submit, "Submit" %>
+  </div>
+<% end %>
+
+<%= javascript_tag do %>
+  $(function() {
+    $("#matter_lawyer_id").tokenInput("/profiles/search_lawyers.json", {
+      propertyToSearch : "email_with_name",
+      crossDomain: false,
+      prePopulate: $("#matter_lawyer_id").data("load"),
+      theme: "facebook",
+      preventDuplicates: false,
+      tokenValue: "email_with_name",
+      tokenLimit: 1,
+      onAdd: function (item) {
+        $("#matter_lawyer_id").val(item.id);
+      },
+      onDelete: function (item) {
+        $("#matter_lawyer_id").val("");
+      }
+   });
+  });
+<% end %>

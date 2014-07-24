@@ -1,0 +1,41 @@
+<h2>Client</h2>
+<p><%=@matter.client.first_name%> <%=@matter.client.last_name%></p>
+
+<% if @matter.issue.present? %>
+<h2>Issue</h2>
+<p><%=@matter.issue%></p>
+<% end %>
+
+<% if @matter.help_asked_by_client.present? %>
+<h2>Help asked by client</h2>
+<p><%=@matter.help_asked_by_client%></p>
+<% end %>
+
+<% if @matter.fee_arrangement_by_client.present? %>
+<h2>Fee arrangement by client</h2>
+<p><%=JSON.parse(ENV["FEE_ARRANGEMENT"])[@matter.fee_arrangement_by_client]%></p>
+<% end %>
+
+<% if @matter.budget.present? %>
+<h2>Client Budget</h2>
+<p><%=@matter.budget%></p>
+<% end %>
+
+<% if @matter.client_reference.present? %>
+<h2>Reference</h2>
+<p><%=@matter.client_reference%></p>
+<% end %>
+
+<% if @matter.timeframe.present? %>
+<h2>Timeframe</h2>
+<p><%=@matter.timeframe%></p>
+<% end %>
+
+<% if @matter.pending_at == "lawyer" and @matter.status == 0 %>
+<a href="<%=edit_matter_path(@matter)%>" class="btn btn-primary btn-large">Make Changes</a>
+<a href="<%=accept_matter_path(@matter)%>" class="btn btn-success btn-large">Accept</a>
+<% else %> 
+<div class="alert alert-info">
+<%=JSON.parse(ENV["MATTER_STATUS"])[@matter['status']] %>
+</div>
+<% end %>
