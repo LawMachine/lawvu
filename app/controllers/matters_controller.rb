@@ -17,7 +17,7 @@ class MattersController < ApplicationController
       @matter = Matter.new(lawyer_matter_params)
     end
     if @matter.save
-      redirect_to matters_path(@matter)
+      redirect_to matter_path(@matter)
     else
       render "new"
     end

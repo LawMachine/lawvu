@@ -1,11 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
   layout :resolve_layout
-  
-  def edit1
-    @user = current_user
-    render :layout=>"application"
-  end
-  
+    
   private
   
   def sign_up_params
@@ -22,4 +17,11 @@ class RegistrationsController < Devise::RegistrationsController
       "application"
     end
   end 
+  
+  protected
+  
+  def after_inactive_sign_up_path_for(resource)
+    new_user_session_path
+  end
+  
 end

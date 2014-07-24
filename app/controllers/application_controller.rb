@@ -7,11 +7,15 @@ class ApplicationController < ActionController::Base
   
   def complete_profile
     if current_user.present? and !current_user.roleable_id.present?
-      redirect_to account_settings_path
+      #redirect_to account_settings_path
     end
   end
   
-  #after sign in path
+  # Overwriting the sign_out redirect path method
+  def after_sign_out_path_for(resource_or_scope)
+    new_user_session_path
+  end
+  
   def after_sign_in_path_for(resource)
     if user_signed_in?
       if resource.roleable_id.present?
