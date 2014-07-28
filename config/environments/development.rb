@@ -14,7 +14,7 @@ Rails.application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -31,7 +31,22 @@ Rails.application.configure do
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
-
+  
+  LawvU::Application.config.middleware.use ExceptionNotification::Rack,
+   :email => {
+     :email_prefix => "Exception Details: ",
+     :sender_address => %{"LawvU Exception Notifier" <bhimasen@idifysolutions.com>},
+     :exception_recipients => %w{gagan@idifysolutions.com},
+     :delivery_method => :smtp,
+     :smtp_settings => {
+      :address => ENV['LAWVU_MAILER_ADDRESS'],
+      :port => 587,
+      :domain => ENV['LAWVU_MAILER_DOMAIN'],
+      :user_name => ENV['LAWVU_MAILER_USERNAME'] ,
+      :password => ENV['LAWVU_MAILER_PWD'],
+      :authentication => "plain"
+     }
+   }
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   config.action_mailer.default_url_options = { host: 'localhost:3000' }

@@ -6,5 +6,5 @@ MATTER_STATUS: ["waiting for lawyer acceptance","waiting for client acceptance",
 LAWVU_MAILER_USERNAME: 'postmaster@idifysolutions.com'
 LAWVU_MAILER_PWD: '7or9v71rc410'
 LAWVU_MAILER_ADDRESS: 'smtp.mailgun.org'
-LAWVU_MAILER_DOMAIN: '96.126.98.180'
-LAWVU_MAILER_SENDER: "TracerR <admin@tracerr.com>"
+LAWVU_MAILER_DOMAIN: 'lawvu.com'
+LAWVU_MAILER_SENDER: "LawvU <info@lawvu.com>"

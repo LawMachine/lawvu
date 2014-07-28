@@ -44,4 +44,4 @@ gem 'simple_form'
 gem 'figaro'
 gem 'carrierwave', "~> 0.9.0"
 gem "mini_magick", "~>3.6.0"
-gem 'likeit', :path => "/home/jony/gems"
+gem 'exception_notification'

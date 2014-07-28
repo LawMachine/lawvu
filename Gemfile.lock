@@ -69,6 +69,9 @@ GEM
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
     erubis (2.7.0)
+    exception_notification (4.0.1)
+      actionmailer (>= 3.0.4)
+      activesupport (>= 3.0.4)
     execjs (2.2.1)
     figaro (0.7.0)
       bundler (~> 1.0)
@@ -160,6 +163,7 @@ DEPENDENCIES
   carrierwave (~> 0.9.0)
   coffee-rails (~> 4.0.0)
   devise
+  exception_notification
   figaro
   jbuilder (~> 2.0)
   jquery-rails
