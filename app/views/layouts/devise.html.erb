@@ -13,7 +13,16 @@
     <![endif]-->
 
     <%= stylesheet_link_tag "application", :media => "all" %>
+    <%#= stylesheet_link_tag "bootstrap.min"%>
+    <%#= stylesheet_link_tag "bootstrap-responsive.min"%>
+    <%#= stylesheet_link_tag "font-awesome.min"%>
+    <!--fonts-->
 
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+
+    <!--ace styles-->
+    <%#= stylesheet_link_tag "ace.min"%>
+    <%#= stylesheet_link_tag "ace-responsive.min"%>
     <!-- For third-generation iPad with high-resolution Retina display: -->
     <!-- Size should be 144 x 144 pixels -->
     <%= favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144' %>
@@ -36,34 +45,245 @@
 
     <%= javascript_include_tag "application" %>
   </head>
-  <body>
+  <body class="login-layout">
+    <div class="container-fluid" id="main-container">
+      <div id="main-content">
+        <div class="row-fluid">
+          <div class="span12">
+            <div class="login-container">
+              <div class="row-fluid">
+                <div class="center">
+                  <h1>
+                    <!-- <i class="icon-leaf green"></i> -->
+                    <span class="red">LawvU</span>
+                  </h1>
+                  <h4 class="blue">&copy; Company Name</h4>
+                </div>
+              </div>
 
-    <div class="navbar navbar-fluid-top">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">LawvU</a>
-        </div>
+              <div class="space-6"></div>
+              <div><%#= yield %></div>
+              <div class="row-fluid">
+                <div class="position-relative">
+                  <div id="login-box" class="visible widget-box no-border">
+                    <div class="widget-body">
+                      <div class="widget-main">
+                        <h4 class="header blue lighter bigger">
+                          <i class="icon-coffee green"></i>
+                          Please Enter Your Information
+                        </h4>
+
+                        <div class="space-6"></div>
+                        <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                          <fieldset>
+                            <label>
+                              <span class="block input-icon input-icon-right">
+                              <%= f.input :email, required: false, label: false, autofocus: true, :input_html=>{placeholder: "Email", :class => "span12"} %>
+                              <i class="icon-envelope"></i>
+                              </span>
+                            </label>
+                            <label>
+                              <span class="block input-icon input-icon-right">
+                              <%= f.input :password, label: false, required: false, :input_html=>{placeholder: "Password", :class => "span12"} %>
+                              <i class="icon-lock"></i>
+                              </span>
+                            </label>
+                            <!-- <div class="space"></div> -->
+                            <div class="row-fluid">
+                              <label class="span8">
+                              <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+                              </label> 
+                              <%= f.button :submit, "Sign in", :class =>"span4 btn btn-small btn-primary" %>
+                            </div>
+                        </fieldset>
+                        <% end %>
+                        
+                        <div>
+                          <a href="#" onclick="show_box('receive-confiramation'); return false;">
+                            Did not receive confiramation instruction?
+                          </a>
+                        </div>
+
+                      </div><!--/widget-main-->
+
+                      <div class="toolbar clearfix">
+                        <div>
+                          <a href="#" onclick="show_box('forgot-box'); return false;" class="forgot-password-link">
+                            <i class="icon-arrow-left"></i>
+                            I forgot my password
+                          </a>
+                        </div>
+
+                        <div>
+                          <a href="#" onclick="show_box('signup-box'); return false;" class="user-signup-link">
+                            I want to register
+                            <i class="icon-arrow-right"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div><!--/widget-body-->
+                  </div><!--/login-box-->
+
+                  <div id="forgot-box" class="widget-box no-border">
+                    <div class="widget-body">
+                      <div class="widget-main">
+                        <h4 class="header red lighter bigger">
+                          <i class="icon-key"></i>
+                          Retrieve Password
+                        </h4>
+
+                        <div class="space-6"></div>
+                        <p>
+                          Enter your email and to receive instructions
+                        </p>
+                        <%= simple_form_for(resource, as: resource_name, url:  forgot_password_done_path(), html: { method: :post }) do |f| %>
+                          <%= f.error_notification %>
+                          <fieldset>
+                            <label>
+                              <span class="block input-icon input-icon-right">
+                               <%= f.input :email, required: true, label: false, autofocus: true, :input_html=>{placeholder: "Email", :class => "span12"} %>
+                              <i class="icon-envelope"></i>
+                              </span>
+                            </label>
+
+                            <div class="row-fluid">
+                             <%= f.button :submit, "Send Me!", :class => "span5 offset7 btn btn-small btn-danger" %>
+                            </div>
+                          </fieldset>
+                        <% end %>
+                      </div><!--/widget-main-->
+
+                      <div class="toolbar center">
+                        <a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
+                          Back to login
+                          <i class="icon-arrow-right"></i>
+                        </a>
+                      </div>
+                    </div><!--/widget-body-->
+                  </div><!--/forgot-box-->
+                  <div id="receive-confiramation" class="widget-box no-border">
+                    <div class="widget-body">
+                      <div class="widget-main">
+                        <h4 class="header red lighter bigger">
+                          <i class="icon-key"></i>
+                          Resend confiramation instruction
+                        </h4>
+
+                        <div class="space-6"></div>
+                        <p>
+                          Enter your email to receive confiramation instructions
+                        </p>
+                        <%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+                        <%= f.error_notification %>
+                        <%#= f.full_error :confirmation_token %>
+                          <fieldset>
+                            <label>
+                              <span class="block input-icon input-icon-right">
+                               <%= f.input :email, required: true, label: false, autofocus: true, :input_html=>{placeholder: "Email", :class => "span12"} %>
+                              <i class="icon-envelope"></i>
+                              </span>
+                            </label>
+
+                            <div class="row-fluid">
+                             <%= f.button :submit, "Resend confirmation!", :class => "span5 offset7 btn btn-small btn-danger" %>
+                            </div>
+                          </fieldset>
+                        <% end %>
+                      </div><!--/widget-main-->
+
+                      <div class="toolbar center">
+                        <a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
+                          Back to login
+                          <i class="icon-arrow-right"></i>
+                        </a>
+                      </div>
+                    </div><!--/widget-body-->
+                  </div><!--/receive-confiramation-box-->
+
+                  <div id="signup-box" class="widget-box no-border">
+                    <div class="widget-body">
+                      <div class="widget-main">
+                        <h4 class="header green lighter bigger">
+                          <i class="icon-group blue"></i>
+                          New User Registration
+                        </h4>
+
+                        <div class="space-6"></div>
+                        <p>
+                          Enter your details to begin:
+                        </p>
+                        <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+                        <%= f.error_notification %>
+                        <fieldset>
+                            <label>
+                              <span class="block input-icon input-icon-right" style="display:inline;">
+                        
+                                <%= f.input :roleable_type, :as=>"radio_buttons", :collection=>["Client","Lawyer"], required: true, autofocus: true, :label=>"Sign Up As" %>
+                              </span>
+                            </label>
+                            <label>
+                              <span class="block input-icon input-icon-right">  
+                                <%= f.input :email, required: true, label: false, autofocus: true, :input_html=>{placeholder: "Email", :class => "span12"} %>
+                                <i class="icon-envelope"></i>
+                              </span>
+                            </label>
+                            <label>
+                              <span class="block input-icon input-icon-right">  
+                               <%= f.input :password, required: true, label: false, :input_html=>{placeholder: "Password", :class => "span12"} %>
+                               <i class="icon-lock"></i>
+                              </span>
+                            </label>
+                            <label>
+                              <span class="block input-icon input-icon-right"> 
+                              <%= f.input :password_confirmation, required: true, label:false, :input_html=>{placeholder: "Repeat password", :class => "span12"} %>
+                              <i class="icon-retweet"></i>
+                              </span>
+                            </label>
+                            <div class="row-fluid">
+                             <%= f.button :submit, "Sign up", :class => "span6 btn btn-small btn-success" %>
+                            </div>
+                        </fieldset>    
+                        <% end %>
+                        <div>
+                          <a href="#" onclick="show_box('receive-confiramation'); return false;">
+                            Didnot receive confiramation instruction?
+                          </a>
+                        </div>
+
+                      </div>
+
+                      <div class="toolbar center">
+                        <a href="#" onclick="show_box('login-box'); return false;" class="back-to-login-link">
+                          <i class="icon-arrow-left"></i>
+                          Back to login
+                        </a>
+                      </div>
+                    </div><!--/widget-body-->
+                  </div><!--/signup-box-->
+                </div><!--/position-relative-->
+              </div>
+            </div>
+          </div><!--/span-->
+        </div><!--/row-->
       </div>
-    </div>
+    </div><!--/.fluid-container-->
 
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span12">
-          <%= bootstrap_flash %>
-          <%= yield %>
-        </div>
-      </div><!--/row-->
+    <!--basic scripts-->
 
-      <footer>
-        <p>&copy; Company 2014</p>
-      </footer>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      window.jQuery || document.write("<script src='assets/js/jquery-1.9.1.min.js'>"+"<"+"/script>");
+    </script>
 
-    </div> <!-- /container -->
+    <!--page specific plugin scripts-->
 
+    <!--inline scripts related to this page-->
+
+    <script type="text/javascript">
+      function show_box(id) {
+       $('.widget-box.visible').removeClass('visible');
+       $('#'+id).addClass('visible');
+      }
+    </script>
   </body>
 </html>

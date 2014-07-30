@@ -36,7 +36,7 @@ Rails.application.configure do
    :email => {
      :email_prefix => "Exception Details: ",
      :sender_address => %{"LawvU Exception Notifier" <bhimasen@idifysolutions.com>},
-     :exception_recipients => %w{gagan@idifysolutions.com},
+     :exception_recipients => %w{bhimasen@idifysolutions.com},
      :delivery_method => :smtp,
      :smtp_settings => {
       :address => ENV['LAWVU_MAILER_ADDRESS'],

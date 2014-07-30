@@ -8,6 +8,6 @@ class User < ActiveRecord::Base
   has_one :profile_pic
   has_many :matters
   
-  acts_as_liker
-  acts_as_likeable
+  # acts_as_liker
+  # acts_as_likeable
 end
