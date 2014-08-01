@@ -31,6 +31,16 @@ Rails.application.configure do
   # Checks for improperly declared sprockets dependencies.
   # Raises helpful error messages.
   config.assets.raise_runtime_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+      :address              => 'smtp.gmail.com',
+      :port                 => 587,
+      :domain               => 'gmail.com',
+      :user_name            => 'bhimasen@idifysolutions.com',
+      :password             => 'bhimasen1',
+      :authentication       => 'login',
+      :enable_starttls_auto => true
+  }
   
   LawvU::Application.config.middleware.use ExceptionNotification::Rack,
    :email => {

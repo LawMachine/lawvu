@@ -4,6 +4,7 @@ class RegistrationsController < Devise::RegistrationsController
   private
   
   def sign_up_params
+    #raise params.inspect
     params.require(:user).permit(:password, 
                                  :password_confirmation, :email, :roleable_id, :roleable_type
                                 )

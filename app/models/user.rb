@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
   belongs_to :roleable, polymorphic: true
   has_one :profile_pic
   has_many :matters
+  has_many :documents
   
   # acts_as_liker
   # acts_as_likeable

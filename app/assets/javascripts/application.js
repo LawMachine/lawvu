@@ -15,4 +15,21 @@
 //= require twitter/bootstrap
 //= require turbolinks
 //= require jquery.tokeninput
-//= require_tree .
+//= require bootstrap.min
+//= require jquery-fileupload/basic
+// require_tree .
+
+
+$(document).ready(function() {
+  return $('#fileupload').fileupload({
+    dataType: 'json',
+    done: function(e, data) {
+      var file;
+      return file = data.result(console.log(data.textStatus, file.id, file.thumb(file.photo_file_size)), {
+        fail: function(e, data) {
+          return alert('Upload failed');
+        }
+      });
+    }
+  });
+});

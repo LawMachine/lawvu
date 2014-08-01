@@ -1,1 +1,10 @@
 <%= render "show_#{current_user.roleable_type.downcase}_matter" %>
+
+  <div id="upload"></div>
+    <div id="dropzone">
+      <div class="title">Drop file to upload </div>
+      <div class="browse">Browse
+        <input data-url="#" id="fileupload" name="document[:doc]" type="file"></input>
+      </div>
+    </div>
+

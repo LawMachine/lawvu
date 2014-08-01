@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  get 'documents/index'
+
   devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations", :sessions => "sessions", :passwords=>"passwords", :unlocks=>"unlocks"}, :path => "", :path_names => { :sign_out => 'logout', :edit => 'change_password'}
   devise_scope :user do
     match 'forgot_password' => 'passwords#new', :as=>"forgot_password", :via=>[:get]

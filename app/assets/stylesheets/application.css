@@ -10,8 +10,19 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree .
+ * require_tree .
  *= require_self
  *= require token-input
  *= require token-input-facebook
+ *= require bootstrap.min
+ *= require bootstrap-responsive.min
+ *= require font-awesome.min
+ *= require ace.min
+ *= require ace-responsive.min
+ *= require ace-skins.min
+
  */
+input[type="radio"],input[type="checkbox"]{
+    float: left !important;
+    opacity: 100 !important;
+}

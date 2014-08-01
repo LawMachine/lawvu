@@ -46,3 +46,4 @@ gem 'figaro'
 gem 'carrierwave', "~> 0.9.0"
 gem "mini_magick", "~>3.6.0"
 gem 'exception_notification'
+gem "jquery-fileupload-rails" 
