@@ -48,4 +48,4 @@ gem 'exception_notification'
 gem 'capistrano', "2.5.19"
 gem 'capistrano-ext', "1.2.1"
 
-ruby '2.1.0'
+
