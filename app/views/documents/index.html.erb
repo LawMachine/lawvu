@@ -1,2 +1,136 @@
-<h1>Documents#index</h1>
-<p>Find me in app/views/documents/index.html.erb</p>
+<h1>Documents</h1>
+
+<div class="row-fluid">
+							<div class="span12">
+								<table id="table_bug_report" class="table table-striped table-bordered table-hover">
+									<thead>
+										<tr>
+											<th class="center">
+												<label>
+													<input type="checkbox" />
+													<span class="lbl"></span>
+												</label>
+											</th>
+											<th>Document Name</th>
+											<th>Version</th>
+											<th class="hidden-480">Uploaded By</th>
+
+											<th class="hidden-phone">
+												<i class="icon-time hidden-phone"></i>
+												Created_at
+											</th>
+											<th>Download</th>
+											<th>Destroy</th>
+											<th>Upload Document</th>
+										</tr>
+									</thead>
+
+									<tbody>
+									<% @documents.each do |document| %>
+										<tr>
+											<td class="center">
+												<label>
+													<input type="checkbox" />
+													<span class="lbl"></span>
+												</label>
+											</td>
+
+											<td>
+												<a href="#"><%= document.doc_identifier %></a>
+											</td>
+											<td><%= document.version%></td>
+											<% @usr = User.find(document.user_id) if document.user_id.present? %>
+											<% @matr= Matter.find(document.matter_id) if document.matter_id.present? %>
+											<td class="hidden-480"><%= @usr.roleable.full_name if @usr %></td>
+											<td class="hidden-phone"><%= document.created_at.strftime("%d %b. %Y")%></td>
+                                            <td><%= link_to "Download", "#"%></td>
+											<td><%= link_to "Destroy", "#"%></td>
+											<td><%= link_to "Upload", new_version_matter_document_path(:matter_id => @matr.id, :id => document.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'}%></td>
+										</tr>
+
+										
+										<% end %>
+									</tbody>
+								</table>
+							</div><!--/span-->
+						</div><!--/row-->
+
+
+
+
+
+<div id="modal-window" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+
+<%= form_for [@matter, @document], :html => {:multipart => true} do |f| %>
+  
+  <p>
+    <%= f.file_field :doc %>
+  </p>
+  
+  <p><%= f.submit "upload doc" %></p>
+<% end %>
+  <div class="row-fluid">
+  	<div class="span4">
+  		<div class="widget-box">
+  			<div class="widget-header">
+  				<h4>Custom File Input</h4>
+
+  				<span class="widget-toolbar">
+  					<a href="#" data-action="collapse">
+  						<i class="icon-chevron-up"></i>
+  					</a>
+
+  					<a href="#" data-action="close">
+  						<i class="icon-remove"></i>
+  					</a>
+  				</span>
+  			</div>
+
+  			<div class="widget-body">
+  				<div class="widget-main">
+  					<input type="file" id="id-input-file-1" />
+  					<input type="file" id="id-input-file-2" />
+  					<input multiple="" type="file" id="id-input-file-3" />
+  				</div>
+  			</div>
+  		</div>
+  	</div>
+	</div>
+  <script src="assets/ace.min.js"></script>
+
+  <script>
+  $('#id-input-file-3').ace_file_input({
+          style:'well',
+          btn_choose:'Drop files here or click to choose',
+          btn_change:null,
+          no_icon:'icon-cloud-upload',
+          droppable:true,
+          thumbnail:'small',
+          before_change:function(files, dropped) {
+            /**
+            if(files instanceof Array || (!!window.FileList && files instanceof FileList)) {
+              //check each file and see if it is valid, if not return false or make a new array, add the valid files to it and return the array
+              //note: if files have not been dropped, this does not change the internal value of the file input element, as it is set by the browser, and further file uploading and handling should be done via ajax, etc, otherwise all selected files will be sent to server
+              //example:
+              var result = []
+              for(var i = 0; i < files.length; i++) {
+                var file = files[i];
+                if((/^image\//i).test(file.type) && file.size < 102400)
+                  result.push(file);
+              }
+              return result;
+            }
+            */
+            return true;
+          }
+          /*,
+          before_remove : function() {
+            return true;
+          }*/
+      
+        }).on('change', function(){
+          //console.log($(this).data('ace_input_files'));
+          //console.log($(this).data('ace_input_method'));
+        });
+  </script>
+

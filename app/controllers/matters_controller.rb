@@ -1,9 +1,11 @@
 class MattersController < ApplicationController
   def new
     @matter = Matter.new
+    @document = Document.new
   end
   
   def create
+    #raise "matter".inspect
     params[:matter][:user_id] = current_user.id
     if current_user.roleable_type == "Client"
       params[:matter][:client_id] = current_user.roleable_id

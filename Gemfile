@@ -38,6 +38,7 @@ gem 'therubyracer'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
+#gem 'bootstrap-sass'
 gem 'devise'
 gem 'simple_captcha', :git => 'git://github.com/galetahub/simple-captcha.git'
 gem 'simple_form'
@@ -47,5 +48,4 @@ gem "mini_magick", "~>3.6.0"
 gem 'exception_notification'
 gem 'capistrano', "2.5.19"
 gem 'capistrano-ext', "1.2.1"
-
-ruby '2.1.0'
+gem 'rvm-capistrano'

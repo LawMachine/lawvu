@@ -1,0 +1,402 @@
+<style>
+  div.notes {display: inline-block;}
+  td.notes {padding-left: 8px; width: 100px;}
+  td img {}
+  td.thumb, td.label {text-align: right; width: 200px;}
+  td.thumb img {margin: 5px 0; max-width: 150px; max-height: 80px;}
+  tr.image_preview td.thumb img:hover{max-width: 200px; max-height: 160px;}
+</style>
+<% remote ||= false %>
+<% if params[:album_id] and params[:action] ==  'new' %>
+  <%= form.hidden_field "attached_to_type", :value => 'Album' %>
+  <%= form.hidden_field "attached_to_id",  :value => params[:album_id] %>
+<% end %>
+<table class="fieldset">
+  <% # THUMB AND IMAGE UPLOAD FIELDS supress thumb and image upload fields if remote form %>
+  <tr>
+    <td></td>
+    <td class="value">
+      <%= media_item_image_tag(@media_item, :small_thumb) if @media_item.file_name or @media_item.bookmark_to_id %>
+    </td>
+  </tr>
+  <% unless remote %>
+    <% if params[:action] == 'new' %>
+      <tr>
+        <td></td>
+        <td>
+          <div class="clear"></div>
+          <% # HELP TEXT BOX %>
+          <div id="point" style="position: relative;">
+            <div id="help_text" style="position: absolute; top: 0px; left: 261px; width: 300px; padding: 5px; border: 2px solid grey;">
+              Images must be JPEG, GIF, or PNG format.  Audio files must be MP3 format.<br><br>You may select files multiple times to create a list of files to upload.<br><br>1. Press the browse button to open a file select window.<br><br>2. Select one or more files and press the Open button, or double-click a single file.   <br><br>Your selected files will appear in a list where you can see a preview and enter a caption.<br><br>You may remove a selected file by pressing the X.<br><br>There is no file size limit.  Files larger than 600 pixels tall or wide will be resized before uploading, unless you select Keep Original Size.<br><br>3. Press the Upload button to resize files (if necessary) and upload.
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr id="file_include">
+        <td class="label">
+          <label for="media_item_file_datas">files</label>
+        </td>
+        <td class="value">
+          <input accept="image/*,audio/*" id="media_item_file_datas" multiple="true" name="media_item[file_datas][]" style="width: 245px;display: none;" type="file">/</input>
+          <div id="choose_new" style="border: 1px solid white;width: 251px;">
+            <button id="select_image">Choose Files</button>
+            <span id="number_of_files">No file chosen</span>
+          </div>
+        </td>
+      </tr>
+      <% # ALLOW KEEP ORIGINAL SIZE OPTION FOR ALL %>
+      <tr id="not_resize">
+        <td class="label">
+          <label for="media_item_do_not_resize">keep original size</label>
+        </td>
+        <td class="value">
+          <input name="media_item[do_not_resize]" type="hidden" value="0"></input>
+          <input id="media_item_do_not_resize" name="media_item[do_not_resize]" type="checkbox" value="1"></input>
+        </td>
+      </tr>
+    <% else %>
+      <%= form.file_field :file_data, :label => 'file', :title => 'press browse to choose audio file. only gif, jpeg, jpg, png and mp3 format supported.' %>
+    <% end %>
+  <% end %>
+  <% # MOVE TO %>
+  <% if remote and @media_item.album_list(current_member).size > 0 %>
+    <%= form.select :attached_to_id, @media_item.album_list(current_member).collect {|p| [ p.name, p.id ] }, :label => "move to", :include_blank => true %>
+  <% end %>
+  <% if remote %>
+    <% # CAPTION %>
+    <%= form.text_field :note, :label => 'caption' %>
+    <% # TAG LIST %>
+    <%= render :partial => 'layouts/autocomplete_field', :locals => {:form => form, :method => 'tag_list', :options => {:label => 'tags', :autocomplete_type => "json", :id=>"tag_autocomplete", :path_for_autocomplete => tags_for_autocomplete_media_items_path}} %>
+    <% # MEMBER LIST %>
+    <%= render :partial => 'layouts/autocomplete_field', :locals => {:form => form, :method => 'member_list', :options => {:label => 'members', :autocomplete_type => "json", :id=>"member_autocomplete",:path_for_autocomplete => members_for_autocomplete_members_path}} %>
+  <% end %>
+  <% unless params[:action] == 'uploads' %>
+    <% # REMOVE FROM HOTPICS only for site admin %>
+    <% if site_admin? %>
+      <% if params[:action] == 'edit' %>
+        <%= form.check_box :remove_from_hotpics %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <tr class="save_cancel">
+    <td class="save_cancel center" colspan="2" style="padding-left: 8px;">
+      <br/>
+      <% unless remote %>
+        <%= link_to_function "Upload", "", :id => "upload_button", :style => 'display:none;' %>
+        <% if params[:action] == 'uploads' %>
+          <%= form.hidden_field "do_not_resize",  :value => 1 %>
+          <%= link_to_function "close", "$('new_upload_flyout').setStyle('display','none');" %>
+        <% elsif @media_item.attached_to_type == 'Album' %>
+          <%= link_to "cancel", album_media_items_path(@media_item.attached_to) %>
+        <% else %>
+          <%= link_to "cancel", url_for(@media_item.attached_to) %>
+        <% end %>
+        <br/>
+        <br/>
+      <% else %>
+        <%= submit_tag "save" %>
+        <%= link_to_function 'cancel', "$('EditPhotoFlyout').setStyle('display','none')" %>
+      <% end %>
+      <div class="spinner"></div>
+    </td>
+  </tr>
+  <tr id="done_bar">
+    <td></td>
+    <td>
+      <div id="upload_text" style="margin-left: 7px;"></div>
+      <div id="bar_fade" style="display:none; width: 248px; margin-right: 2px; margin-bottom: 0px; margin-top: 6px; padding-left: 7px;">
+        <div class="progress progress-striped active" style="margin-bottom: 0px;">
+          <div class="bar" style="width: 0%; color: orange;">Processing...</div>
+        </div>
+      </div>
+    </td>
+  </tr>
+  <tr id="after_preview" style="display: none;"></tr>
+</table>
+<!-- if not remote form, write js_for_autocomplete script
+-->
+<% unless remote %>
+  <script>
+    <%= @js_for_autocomplete %>
+    var old_ie = false;
+  </script>
+<% end %>
+<% if @ipad and params[:action] == 'new' %>
+  <script class="javascript">
+    <plain>
+      
+      // check if photos fields are disabled and if so replace with text message
+      window.addEvent("domready", function(event) {
+        if ($('media_item_file_datas').disabled) {
+          $('help_text').set('text',"Photo uploads are not supported on your device. Please use a desktop computer or a more current ipad operating system .");
+        }
+      });
+
+
+    </plain>
+  </script>
+<% end %>
+<!--[if LT IE 10]
+  <script>
+    
+    old_ie = true;
+    
+
+  </script>
+-->
+<script>
+  
+  // for using jQuery alongside another JavaScript library
+  var jq=jQuery.noConflict();
+  
+  $('bodyClass').addClass('media_item update');
+
+  // declare required variables
+  var total_uploads = 0;
+  var total_count = 0;
+  var add_cnt = 0;
+  var done_count = 0;
+  var cnt = 0;
+  var resizing = 20;
+  var delete_filename = [];
+  var total_val = 0;
+  var note_val = [];
+
+  // function for removing any image from the upload queue
+  function remove_image_preview(count,dlt_flnm) {
+    if(confirm('Are you sure you want to remove this image from the upload queue?')) {
+      jq("#preview_"+count).remove();
+      delete_filename.push(decodeURIComponent(dlt_flnm));
+      total_count--;
+
+      if (total_count == 0) {
+        total_uploads = 0;
+        cnt = 0;
+        document.getElementById('upload_button').style.display='none';
+        jq('#number_of_files').html('No file chosen');
+      }
+      if (total_count == 1) {
+        jq('#number_of_files').html(total_count + ' file');
+      }
+      if (total_count > 1) {
+        jq('#number_of_files').html(total_count + ' files');
+      }
+    }
+  }
+
+  jq(function () {
+    'use strict';
+    
+    jq('#choose_new').click(function(){
+      jq('#media_item_file_datas').click();
+      return false;
+    });
+
+    // Initialize the jQuery File Upload widget with options required
+    jq('#fileupload').fileupload({
+      dataType: 'json', // type of data that is expected back from the server
+      sequentialUploads: true, // issue all file upload requests in a sequential order
+
+      // Enable image resizing, except for Android and Opera, which actually support image resizing, but fail to send Blob objects via XHR requests
+      disableImageResize: /Android(?!.*Chrome)|Opera/.test(window.navigator && navigator.userAgent),
+      imageForceResize: true, // forces writing to and saving images from canvas
+      imageMaxWidth: 600, // maximum width of resized images
+      imageMaxHeight: 600, // maximum height of resized images
+
+      // invoked as soon as files are added to the fileupload widget
+      add: function (e, data) {
+        var $this = jq(this);
+        jq('#upload_button').css('display','inline');
+        total_uploads = data["originalFiles"].length; // count of uploaded files
+        add_cnt++;
+        total_count = total_count + add_cnt;
+        add_cnt = 0;
+        cnt++;
+        
+        // create image preview with caption
+        if(old_ie) {
+          if (data.files[0].name.toLowerCase().indexOf('jpeg') > -1 || data.files[0].name.toLowerCase().indexOf('jpg') > -1 || data.files[0].name.toLowerCase().indexOf('png') > -1 || data.files[0].name.toLowerCase().indexOf('gif') > -1) {
+            jq("<tr id='preview_"+cnt+"' class='image_preview'>"+
+              "<td class='thumb'>"+
+                data.files[0].name +
+              "</td>"+
+              "<td class='notes'>"+
+                "<div class='notes'>Caption<br/>"+
+                  "<input id='media_item_notes' name='media_item[notes][]' size='' type='text' style='width: 180px;'>"+
+                "</div>"+
+                "<span class='save_cancel'>"+
+                  "<a href='javascript:void(0);' onClick=remove_image_preview("+cnt+",'"+encodeURIComponent(data.files[0].name)+"');>X</a>"+
+                "</span>"+
+              "</td>"+
+            "</tr>").insertBefore('#after_preview');
+          } else if (data.files[0].name.toLowerCase().indexOf('mp3') > -1) {
+            jq("<tr id='preview_"+cnt+"' class='image_preview'>"+
+              "<td class='thumb'>"+
+                "<img src='/images/play-large.jpg' />"+
+              "</td>"+
+              "<td class='notes'>"+
+                "<div class='notes'>Caption<br/>"+
+                  "<input id='media_item_notes' name='media_item[notes][]' size='' type='text' style='width: 180px;'>"+
+                "</div>"+
+                "<span class='save_cancel'>"+
+                  "<a href='javascript:void(0);' onClick=remove_image_preview("+cnt+",'"+encodeURIComponent(data.files[0].name)+"');>X</a>"+
+                "</span>"+
+              "</td>"+
+            "</tr>").insertBefore('#after_preview');
+          } else {
+            total_count--;
+            if (total_count == 0) {
+              jq('#save_image').css('display','none');
+            }
+            jq("<tr id='preview_"+cnt+"' class='image_preview'>"+
+              "<td class='thumb'>"+
+              "</td>"+
+              "<td class='notes'>"+
+                "<span>"+
+                  data.files[0].name +" dropped. Invalid file type."+
+                "</span>"+
+              "</td>"+
+            "</tr>").insertBefore('#after_preview');
+          }
+        } else {
+          if (data.files[0].type.indexOf('image/jpeg') == 0 || data.files[0].type.indexOf('image/png') == 0 || data.files[0].type.indexOf('image/gif') == 0) {
+            jq("<tr id='preview_"+cnt+"' class='image_preview'>"+
+                "<td class='thumb'>"+
+                  "<img src='"+URL.createObjectURL(data.files[0])+"' />"+
+                "</td>"+
+                "<td class='notes'>"+
+                  "<div class='notes'>Caption<br/>"+
+                    "<input id='media_item_notes' name='media_item[notes][]' size='' type='text' style='width: 180px;'>"+
+                  "</div>"+
+                  "<span class='save_cancel'>"+
+                    "<a href='javascript:void(0);' onClick=remove_image_preview("+cnt+",'"+encodeURIComponent(data.files[0].name)+"');>X</a>"+
+                  "</span>"+
+                "</td>"+
+              "</tr>").insertBefore('#after_preview');
+          } else if (data.files[0].type.indexOf('audio/mp3') == 0) {
+            jq("<tr id='preview_"+cnt+"' class='image_preview'>"+
+              "<td class='thumb'>"+
+                "<img src='/images/play-large.jpg' />"+
+              "</td>"+
+              "<td class='notes'>"+
+                "<div class='notes'>Caption<br/>"+
+                  "<input id='media_item_notes' name='media_item[notes][]' size='' type='text' style='width: 180px;'>"+
+                "</div>"+
+                "<span class='save_cancel'>"+
+                  "<a href='javascript:void(0);' onClick=remove_image_preview("+cnt+",'"+encodeURIComponent(data.files[0].name)+"');>X</a>"+
+                "</span>"+
+              "</td>"+
+            "</tr>").insertBefore('#after_preview');
+          } else {
+            total_count--;
+            if (total_count == 0) {
+              jq('#save_image').css('display','none');
+            }
+            jq("<tr id='preview_"+cnt+"' class='image_preview'>"+
+              "<td class='thumb'>"+
+              "</td>"+
+              "<td class='notes'>"+
+                "<span>"+
+                  data.files[0].name +" dropped. Invalid file type."+
+                "</span>"+
+              "</td>"+
+            "</tr>").insertBefore('#after_preview');
+          }
+        }
+
+        if (total_count == 1) {
+          jq('#number_of_files').html(total_count + ' file');
+        } else {
+          jq('#number_of_files').html(total_count + ' files');
+        }
+
+        // images are to be saved after Upload All button click not autosave
+        jq("#upload_button").click(function () {
+          if (delete_filename.indexOf(data.files[0].name) == -1) {
+            if (total_val == 0) {
+              jq("input[name*='media_item[notes][]']").each(function() {
+                note_val.push(jq(this).val());
+              });
+            }
+            if (data.files[0].type.indexOf('image') == 0 || data.files[0].type.indexOf('audio') == 0) {
+              if (jq("#media_item_do_not_resize").is(':checked')) {
+                // send extra form parameters with data
+                data.formData = { 'media_item[note]': note_val[total_val],
+                                  'media_item[attached_to_id]': jq("#media_item_attached_to_id").val(),
+                                  'media_item[attached_to_type]': jq("#media_item_attached_to_type").val(),
+                                  'media_item[do_not_resize]': 1
+                                };
+                data.submit(); // submit the data
+                total_val++;
+              } else {
+                // process again data for overriding images with new settings of resize
+                data.process(function () {
+                  return $this.fileupload('process', data);
+                }).done(function() {
+                  // send extra form parameters with data
+                  data.formData = { 'media_item[note]': note_val[total_val],
+                                    'media_item[attached_to_id]': jq("#media_item_attached_to_id").val(),
+                                    'media_item[attached_to_type]': jq("#media_item_attached_to_type").val(),
+                                    'media_item[do_not_resize]': 0
+                                  };
+                  data.submit(); // submit the data
+                  total_val++;
+                });
+              }
+            }
+          }
+        });
+      }, 
+
+      // Callback for the start of each file upload request
+      send: function(e, data) {
+        // show the progess bar
+        if (done_count == 0) {
+          if (jq("#media_item_do_not_resize").is(':checked')) {
+            jq('#upload_text').html('Uploading...');
+          } else {
+            jq('#upload_text').html('Resizing...');
+          }
+        }
+        jq('#bar_fade').css('display','block');
+        jq('.progress').fadeIn();
+        jq('#file_include').css('display','none');
+        jq('#not_resize').css('display','none');
+        jq('#upload_button').css('pointer-events','none');
+      },
+
+      // Callback for global upload progress events
+      progressall: function (e, data) {
+        // update the progress bar as per response from the server of how much data is saved
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        jq('.bar').css('width', progress + '%');
+        if (progress <= resizing) {
+          if (jq("#media_item_do_not_resize").is(':checked')) {
+            jq('#upload_text').html('Uploading...');
+          } else {
+            jq('#upload_text').html('Resizing...');
+          }
+        } else {
+          jq('#upload_text').html('Uploading...');
+        }
+        jq('.bar').html('Processing...' + progress + '%');
+      },
+
+      // Callback for successful upload requests
+      done: function (e, data) {
+        done_count++;
+        // when count of total uploads is equal to count of done, hide the progress bar and redirect to album path
+        if(done_count == total_count) {
+          jq('.progress').fadeOut(100, function() {
+            jq('.image_preview').remove();
+            jq('#upload_text').html('Upload successful!<br/>Redirecting to gallery view...');
+            processing();
+          });
+          window.location = '#{album_media_items_path(@media_item.attached_to)}';
+        }
+      }
+    });
+  });
+
+</script>

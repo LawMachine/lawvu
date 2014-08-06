@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   
-  get 'documents/index'
+  
 
   devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations", :sessions => "sessions", :passwords=>"passwords", :unlocks=>"unlocks"}, :path => "", :path_names => { :sign_out => 'logout', :edit => 'change_password'}
   devise_scope :user do
@@ -14,7 +14,14 @@ Rails.application.routes.draw do
   match 'account_settings' => 'profiles#update', :as=>"update_account_settings", :via=>[:post,:put,:patch]
   post 'user/upload_profile_pic' => 'profiles#upload_profile_pic', as: 'upload_profile_pic'
   
+  
   resources :matters do
+    resources :documents do
+      member do
+        get 'new_version'
+        post 'upload_version'
+      end
+    end
     member do
       get 'accept'
     end

@@ -1,0 +1,134 @@
+https://developers.google.com/google-apps/calendar/v3/reference/events/delete
+
+
+ArgumentError (Missing access token.)
+
+
+
+event insert:
+
+event = {
+  'summary' => 'Appointment',
+  'location' => 'Somewhere',
+  'start' => {
+    'dateTime' => '2011-06-03T10:00:00.000-07:00'
+  },
+  'end' => {
+    'dateTime' => '2011-06-03T10:25:00.000-07:00'
+  },
+  'attendees' => [
+    {
+      'email' => 'attendeeEmail'
+    },
+    #...
+  ]
+}
+result = client.execute(:api_method => service.events.insert,
+                        :parameters => {'calendarId' => 'primary'},
+                        :body => JSON.dump(event),
+                        :headers => {'Content-Type' => 'application/json'})
+print result.data.id
+
+
+"ya29.UADSPE3p-C3AJhwAAAAvHlDo4Ld4wCH4eEGNJohYxI-SSR3CAikRdB6wfeZmlA"
+
+
+Google::APIClient::ClientError (Invalid Credentials):
+  app/controllers/signin_controller.rb:53:in `people'
+
+
+onclick="myfun("' + event.id + '");"
+
+
+<form class="form-horizontal">
+  <fieldset>
+    <legend>Sign up using email</legend>
+    <div class="control-group">
+      <label class="control-label" for="name">Name</label>
+      <div class="controls">
+        <input id="name" name="name" type="text" placeholder="Firstname Lastname" class="input-xlarge" required="">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="email">Email</label>
+      <div class="controls">
+        <input id="email" name="email" type="text" placeholder="username@domain.com" class="input-xlarge" required="">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="username">Username</label>
+      <div class="controls">
+        <input id="username" name="username" type="text" placeholder="username" class="input-xlarge" required="">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="password">Password</label>
+      <div class="controls">
+        <input id="password" name="password" type="password" placeholder="password" class="input-xlarge" required="">
+      </div>
+
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="confirm_password">Confirm Password</label>
+      <div class="controls">
+        <input id="confirm_password" name="confirm_password" type="password" placeholder="password" class="input-xlarge" required="">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="gender">Gender</label>
+      <div class="controls">
+        <label class="radio inline" for="gender-0">
+          <input type="radio" name="gender" id="gender-0" value="Female" checked="checked">
+          Female
+        </label>
+        <label class="radio inline" for="gender-1">
+          <input type="radio" name="gender" id="gender-1" value="Male">
+          Male
+        </label>
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="submit"></label>
+      <div class="controls">
+        <button id="submit" name="submit" class="btn btn-success">Sign Up</button>
+        <button id="reset" name="reset" class="btn btn-info">Reset</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+
+
+
+
+
+
+<div class="navbar">
+  <div class="navbar-inner">
+    <div class="container">
+      <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar">jbdfjvbjdf</span>
+        <span class="icon-bar">djfvk,dfnjk</span>
+        <span class="icon-bar"></span>
+      </a>
+      <!-- Everything in here gets hidden at 940px or less -->
+      <div class="nav-collapse">
+        <!-- menu items gets rendered here instead -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+

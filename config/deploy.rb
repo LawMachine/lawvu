@@ -27,36 +27,42 @@
 
 
 
-#require 'rvm/capistrano'
+require 'rvm/capistrano'
 require 'bundler/capistrano'
-# require 'capistrano/ext/multistage'
+require 'capistrano/ext/multistage'
 
-set :domain, "50.116.56.223"
-server "#{domain}", :app, :web, :db, :primary => true
+# set :domain, "50.116.56.223"
+# server "#{domain}", :app, :web, :db, :primary => true
 set :application, "lawvu"
-#set :repository,  "https://github.com/audiorokit/audio_rokit.git"
-#set :repository,  "https://nerdix@bitbucket.org/nerdix/idify_site.git"
+
 set :repository, "git@github.com:LawMachine/lawvu"
 
-set :use_sudo, false
+set :use_sudo, true
 
 set :scm, :git
 set :branch, "master"
 set :user, "root"
-set :app_uri, 'lawvu.com'
-set :deploy_to, "/var/www/#{app_uri}"
+# set :app_uri, 'lawvu.com'
+# set :deploy_to, "/var/www/#{app_uri}"
 
-set :deploy_via, :copy
-#set :deploy_via, :remote_cache
+# set :deploy_via, :copy
+set :rvm_ruby_string, :local
+set :rvm_autolibs_flag, "read-only"
+
+# set :deploy_via, :remote_cache
+set :rvm_install_with_sudo, true
 ssh_options[:forward_agent] = true
 default_run_options[:pty] = true
 
  set :stages, ["development", "staging", "production"]
- #set :default_stage, "production"
+ set :default_stage, "production"
+ #set :rvm_ruby_string, '2.1.0@lawvu' # you probably have this already
+ set :rvm_type, :system
 
 # if you want to clean up old releases on each deploy uncomment this:
+# before 'deploy', 'rvm:install_rvm'  # install/update RVM
+before 'deploy', 'rvm:install_ruby'
 after "deploy", "deploy:cleanup"
-
 after "deploy:cleanup", "deploy:fix_permissions"
 
 # On initial deploy uncomment all the before 'deploy:assets:precompile' callbacks:

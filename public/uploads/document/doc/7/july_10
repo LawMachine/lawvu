@@ -1,0 +1,40 @@
+uclves
+
+view/find_trial/_trial_filter.
+api/v1/trial_controller.rb...search method
+assets/javascript/find_trials.je.coffee
+controller/concerns/fetch_trial.rb...execute_search method
+lib/trial_serch.rb...search method
+lib/trial_query_generator.rb
+
+{:query=>{:from=>0, :size=>50, :query=>{:filtered=>{:filter=>{:and=>[{:ids=>{:values=>[]}}, {:terms=>{:genders=>["male", "female"]}}, {:terms=>{:status=>[:available, :enrolling_by_invitation, :recruiting, :approved_for_marketing]}}]}}}}, :results=>{"took"=>3, "timed_out"=>false, "_shards"=>{"total"=>5, "successful"=>5, "failed"=>0}, "hits"=>{"total"=>0, "max_score"=>nil, "hits"=>[]}}}:
+
+{:query=>{:from=>0, :size=>50, :query=>{:filtered=>{:filter=>{:and=>[{:ids=>{:values=>["NCT01953588", "NCT01120249", "NCT00840177", "NCT01064648", "NCT01349881", "NCT00946712", "NCT01097278", "NCT00608361", "NCT00661193", "NCT01959139", "NCT01925131", "NCT02042443", "NCT01903811", "NCT02137837", "NCT01902173", "NCT01809691", "NCT01668719", "NCT01674140", "NCT01386385", "NCT01946516", "NCT01802333", "NCT01598298", "NCT01498289", "NCT01535066", "NCT01522976", "NCT01688973", "NCT01416688", "NCT01224665", "NCT01453452", "NCT01272037", "NCT01359592"]}}, {:terms=>{:genders=>["male", "female"]}}, {:terms=>{:status=>[:available, :enrolling_by_invitation, :recruiting, :approved_for_marketing]}}]}}}}, :results=>{"took"=>6, "timed_out"=>false, "_shards"=>{"total"=>5, "successful"=>5,
+ "failed"=>0}, "hits"=>{"total"=>0, "max_score"=>nil, "hits"=>[]}}}
+
+
+
+bundle exec bin/trial_indexer --host 10.0.1.72 -p 9200 -e production --input config/csv file
+bundle exec bin/trial_indexer --host localhost -p 9200 -e production --input config/cog_trials.xlsx
+bundle exec bin/trial_indexer --host localhost -p 9200 -e production --input config/ucsf_trials.xlsx
+
+
+
+co_operative_group has_many sites:
+This is not required . in the begining i thought i will be like organisation and organisation has_many sites, sites belongs_to organisation, thats why i had taken association of co_operative group and sites model
+
+why did you name "cog" in find_trials:
+
+
+site belongs_to:cooperative group:
+
+
+constraints subdomain: ["development",""] do
+
+ devise_for :admins, :constraints => {:subdomain => 'backoffice'},
+request.subdomains(0).first
+
+
+
+
+

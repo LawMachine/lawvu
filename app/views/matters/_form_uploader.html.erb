@@ -1,0 +1,16 @@
+<%= simple_form_for [@matter, @document], :html => { :class => 'form-vertical' } do |f| %>
+        <h3>Upload Documents Here</h3>
+        <p>You can select multiple files.</p>
+        <%= file_field_tag(:doc, multiple: true, name: "document[doc]") %>                
+<% end %>
+
+<script id="template-upload" type="text/x-tmpl">
+<div class="upload">
+  {%=o.name%}
+  <div class="progress progress-striped"><div class="progress-bar" style="width: 0%"></div></div>
+</div>
+</script>
+
+<div id="uploads">
+        <%= render 'uploads' %>
+</div>
