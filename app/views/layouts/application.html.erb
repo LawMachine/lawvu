@@ -48,7 +48,6 @@
     <!-- Size should be 32 x 32 pixels -->
     <%= favicon_link_tag 'favicon.ico', :rel => 'shortcut icon' %>
 
-    <%= javascript_include_tag "application" %>
   </head>
 
   <body>
@@ -593,6 +592,7 @@
       <i class="icon-double-angle-up icon-only bigger-110"></i>
     </a>
 
+    <%= javascript_include_tag "application" %>
     <!--basic scripts-->
     <%= yield :script %>
     

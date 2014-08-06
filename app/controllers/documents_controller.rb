@@ -1,23 +1,27 @@
 class DocumentsController < ApplicationController
+  before_filter :get_matter
+  
   def index
-    @matter = Matter.find(params[:matter_id])
     @document = Document.new
-    @documents = Document.all
+    @documents = Document.where("latest_version = true").order("created_at desc")
 
   end
   def create
-    #raise params[:document][:doc].inspect
-    #on Gallery using to_param with 'auth_tokens' for securing user interface
-    @matter = Matter.find(params[:matter_id])
-    #raise @matter.inspect
-    @user = current_user
-    #raise @user.inspect
-    @document = Document.create(:matter_id => @matter.id, :user_id => @user.id, :doc => params[:document][:doc])
-    #raise "bhimasen" 
-    respond_to do |format|
-      format.html { redirect_to :back, notice: "Thank you for uploading" }
-      format.js
-      format.json { render json: [@doc.to_jq_upload].to_json, status: :created, location: @doc }
+    @document = @matter.documents.new
+    @document.doc = params[:document][:doc].shift
+    if @document.save
+      respond_to do |format|
+        format.html {                                         #(html response is for browsers using iframe sollution)
+          render :json => [@document.to_jq_upload].to_json,
+          :content_type => 'text/html',
+          :layout => false
+        }
+        format.json {
+          render :json => [@document.to_jq_upload].to_json
+        }
+      end
+    else
+      render :json => [{:error => "custom_failure"}], :status => 304
     end
   end
   
@@ -26,5 +30,10 @@ class DocumentsController < ApplicationController
       format.html
       format.js
     end
+  end
+  private
+
+  def get_matter
+    @matter = Matter.find(params[:matter_id])
   end
 end

@@ -13,18 +13,17 @@
 //= require jquery
 //= require jquery_ujs
 
-// jquery.min
 // require twitter/bootstrap
 // require turbolinks
 // require jquery.tokeninput
-//= require bootstrap.min
+// require bootstrap.min
 // jquery.fileupload-image
 // jquery.fileupload-process
 // jquery.fileupload
 // jquery.iframe-transport
 // canvas-to-blob.min
 // load-image.min
-//= jquery.ui.widget
+// jquery.ui.widget
 
 // require_tree .
 
@@ -42,3 +41,11 @@
 //     }
 //   });
 // });
+
+//= require bootstrap.min
+//= require jquery-ui-1.10.3.custom.min
+//= require jquery.ui.touch-punch.min
+//= require chosen.jquery.min
+//= require jquery.ui.widget
+//= require jquery.iframe-transport
+//= require jquery.fileupload
