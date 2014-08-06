@@ -13,21 +13,18 @@
 //= require jquery
 //= require jquery_ujs
 
-//= jquery.min
-//= require twitter/bootstrap
-//= require turbolinks
-//= require jquery.tokeninput
+// jquery.min
+// require twitter/bootstrap
+// require turbolinks
+// require jquery.tokeninput
 //= require bootstrap.min
-//= jquery.fileupload-image
-//= jquery.fileupload-process
-//= jquery.fileupload
-//= jquery.iframe-transport
-//= canvas-to-blob.min
-//= load-image.min
+// jquery.fileupload-image
+// jquery.fileupload-process
+// jquery.fileupload
+// jquery.iframe-transport
+// canvas-to-blob.min
+// load-image.min
 //= jquery.ui.widget
-//= ace.min
-//= ace-elements.min
-//= require documents
 
 // require_tree .
 

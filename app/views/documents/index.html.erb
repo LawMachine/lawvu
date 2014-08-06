@@ -96,8 +96,8 @@
   		</div>
   	</div>
 	</div>
-  <script src="assets/ace.min.js"></script>
 
+<% content_for :inlinescript do %>
   <script>
   $('#id-input-file-3').ace_file_input({
           style:'well',
@@ -133,4 +133,4 @@
           //console.log($(this).data('ace_input_method'));
         });
   </script>
-
+<% end %>

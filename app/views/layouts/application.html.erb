@@ -594,7 +594,7 @@
     </a>
 
     <!--basic scripts-->
-
+    <%= yield :script %>
     
     <!--page specific plugin scripts-->
 
@@ -603,6 +603,7 @@
     <script src="/assets/ace-elements.min.js"></script>
     <script src="/assets/ace.min.js"></script>
 
+    <%= yield :inlinescript %>
     <!--inline scripts related to this page-->
   </body>
 </html>

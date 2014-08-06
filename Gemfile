@@ -46,13 +46,6 @@ gem 'figaro'
 gem 'carrierwave', "~> 0.9.0"
 gem "mini_magick", "~>3.6.0"
 gem 'exception_notification'
-<<<<<<< HEAD
 gem 'capistrano', "2.5.19"
 gem 'capistrano-ext', "1.2.1"
 gem 'rvm-capistrano'
-=======
- gem 'capistrano', '~> 3.1'
-gem 'capistrano-bundler', '~> 1.1.2'
-
-ruby '2.0.0'
->>>>>>> b42dc5847e7306bc7fe8b0d5fa8fd43286135453
