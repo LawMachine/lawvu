@@ -20,6 +20,9 @@ Rails.application.routes.draw do
       member do
         get 'new_version'
         post 'upload_version'
+        get 'previous_versions'
+        delete 'delete_version'
+        get 'download'
       end
     end
     member do

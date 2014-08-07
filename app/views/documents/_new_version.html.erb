@@ -1,11 +1,65 @@
  <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Modal header</h3>
+    <h3 id="myModalLabel">Upload New Version</h3>
   </div>
+  <%= form_for new_doc, url: upload_version_matter_document_path(:matter_id => matter.id, :id => doc.id), :html => {:multipart => true} do |f| %>
   <div class="modal-body">
-    **here comes whatever you want to show!**
-  </div>
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Save changes</button>
-  </div>
+  
+    <div class="span6">
+      <div class="control-group">
+        <div class="controls">
+          <p><span>Document Name: <%= doc.doc_identifier %></span></p>
+          <p><span class="version">Version: <%= doc.version %></span></p>
+          <label class="radio inline" id="minor">
+            <input name="form-field-radio" type="radio" />
+            <span > Minor</span>
+          </label>
+          <label class="radio inline" id="major">
+            <input name="form-field-radio" type="radio" />
+            <span > Major</span>
+          </label>
+          <p>
+            
+            <span>New Version: <input type="text" id="version" name="new_version" val="" readonly ></span>
+          </p>
+         
+          <div class="widget-body">
+           <div class="widget-main">
+            <!-- <input type="file" id="id-input-file-1" /> -->
+            <%= f.file_field :doc %>
+
+           </div>
+          </div>
+                   
+        </div>
+      </div>
+    </div>
+    
+    </div>
+    <div class="modal-footer">
+      
+      <%= f.submit "Submit", :class=>"btn btn-primary" %>
+    </div>
+  <% end %>  
+  <script>
+    $(document).ready(function() {
+      
+      var version = <%= doc.version %>;
+      var v = parseFloat(version);
+      var v3;
+    
+      $("input:radio:first").click(function() {
+        //v2 = v+0.1;
+          
+         $("#version").val(v+0.1);
+   
+
+      });
+      $("input:radio:last").click(function() {
+        v3 = v+parseFloat("1.0");
+          $("#version").val(parseFloat(v3));
+
+      });
+
+    });
+  </script>
