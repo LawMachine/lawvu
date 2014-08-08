@@ -1,11 +1,13 @@
 class MattersController < ApplicationController
   def new
+    @current_page = "New Matter"
+    @active_menu = "new_matter"
     @matter = Matter.new
     @document = Document.new
   end
   
   def create
-    #raise "matter".inspect
+    @current_page = "New Matter"
     params[:matter][:user_id] = current_user.id
     if current_user.roleable_type == "Client"
       params[:matter][:client_id] = current_user.roleable_id
@@ -21,6 +23,7 @@ class MattersController < ApplicationController
     if @matter.save
       redirect_to matter_path(@matter)
     else
+      @active_menu = "new_matter"
       render "new"
     end
   end
@@ -29,14 +32,18 @@ class MattersController < ApplicationController
   end
   
   def show
+    @current_page = "Matter Details"
     @matter = Matter.find(params[:id])
+    #raise @documents.inspect
   end
   
   def edit
+    @current_page = "Edit Matter"
     @matter = Matter.find(params[:id])
   end
   
   def update
+    @current_page = "Edit Matter"
     @matter = Matter.find(params[:id])
     if current_user.roleable_type == "Client"
       params[:matter][:status] = 0
@@ -54,6 +61,13 @@ class MattersController < ApplicationController
     @matter = Matter.find(params[:id])
     @matter.update_attributes(:status=>2)
     redirect_to matter_path(@matter)
+  end
+
+  def summary
+    @current_page = "Matter Summary"
+    @matter = Matter.find(params[:id])
+    @documents = @matter.documents.limit(6)
+    @lawyer = Lawyer.find(@matter.lawyer_id)
   end
   
   private

@@ -18,3 +18,5 @@
 /public/uploads/profile_pic
 /public/uploads/tmp
 /public/uploads
+/config/database.yml
+/config/application.yml

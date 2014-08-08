@@ -6,6 +6,7 @@
       <th>Type</th>
       <th>Status</th>
       <th>Finish Date</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -16,6 +17,13 @@
       <td><%=matter['type']%></td>
       <td><%=JSON.parse(ENV["MATTER_STATUS"])[matter['status']]%></td>
       <td><%=matter['expected_completion_date']%></td>
+      <td>
+        <% if (matter.pending_at == "lawyer" and matter.status == 0) or (matter.pending_at == "client" and matter.status == 1) %>
+        <%= link_to "View", matter_path(matter)%>
+        <% else %>
+        <%= link_to "Summary", summary_matter_path(matter)%>
+        <% end %>
+      </td>
     </tr>
   <% end %>
   </tbody>

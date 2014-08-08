@@ -46,6 +46,6 @@ gem 'figaro'
 gem 'carrierwave', "~> 0.9.0"
 gem "mini_magick", "~>3.6.0"
 gem 'exception_notification'
-gem 'capistrano', "2.5.19"
-gem 'capistrano-ext', "1.2.1"
-gem 'rvm-capistrano'
+# Deploy with Capistrano
+gem 'capistrano', '~> 3.1'
+gem 'capistrano-bundler', '~> 1.1.2'

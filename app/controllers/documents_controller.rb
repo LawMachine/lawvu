@@ -2,6 +2,7 @@ class DocumentsController < ApplicationController
   before_filter :get_matter
   
   def index
+    @current_page = "Matter Documents"
     @document = Document.new
     @documents = @matter.documents.where("latest_version = true").order("created_at desc")
   end

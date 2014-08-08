@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     end
     member do
       get 'accept'
+      get 'summary'
     end
   end
   resources :profiles do
