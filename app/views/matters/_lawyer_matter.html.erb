@@ -48,7 +48,8 @@
   </div>
 <% end %>
 
-<%= javascript_tag do %>
+<% content_for :inlinescript do %>
+<script>
   $(function() {
     $("#matter_client_id").tokenInput("/profiles/search_clients.json", {
       propertyToSearch : "email_with_name",
@@ -66,4 +67,5 @@
       }
    });
   });
+</script>
 <% end %>

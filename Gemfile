@@ -38,6 +38,7 @@ gem 'therubyracer'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
+#gem 'bootstrap-sass'
 gem 'devise'
 gem 'simple_captcha', :git => 'git://github.com/galetahub/simple-captcha.git'
 gem 'simple_form'
@@ -45,7 +46,6 @@ gem 'figaro'
 gem 'carrierwave', "~> 0.9.0"
 gem "mini_magick", "~>3.6.0"
 gem 'exception_notification'
- gem 'capistrano', '~> 3.1'
+# Deploy with Capistrano
+gem 'capistrano', '~> 3.1'
 gem 'capistrano-bundler', '~> 1.1.2'
-
-ruby '2.0.0'

@@ -1,2 +1,167 @@
-<h1>Documents#index</h1>
-<p>Find me in app/views/documents/index.html.erb</p>
+<h1>Documents</h1>
+
+  <div class="row-fluid">
+		<div class="span12">
+			<table id="table_bug_report" class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th class="center">
+							<label>
+								<input type="checkbox" />
+								<span class="lbl"></span>
+							</label>
+						</th>
+						<th>Document Name</th>
+						<th>Version</th>
+						<th class="hidden-480">Uploaded By</th>
+
+						<th class="hidden-phone">
+							<i class="icon-time hidden-phone"></i>
+							Created_at
+						</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+
+				<tbody>
+				<% @documents.each do |document| %>
+					<tr>
+						<td class="center">
+							<label>
+								<input type="checkbox" />
+								<span class="lbl"></span>
+							</label>
+						</td>
+
+						<td>
+							<a href="#"><%= document.doc_identifier %></a>
+						</td>
+						<td><%= document.version%></td>
+						<td class="hidden-480"><%= document.user.roleable.full_name if document.user %></td>
+						<td class="hidden-phone"><%= document.created_at.strftime("%d %b. %Y")%></td>
+            <td><%= link_to "Download", download_matter_document_path(:matter_id => document.matter_id, :id => document.id)%> | <%= link_to "Destroy", matter_document_path(:matter_id => document.matter_id, :id => document.id), method: :delete, data: { confirm: 'Are you sure, you want to delete all the versions?' }%> | <%= link_to "Upload Version", new_version_matter_document_path(:matter_id => document.matter_id, :id => document.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'}%> | <% if document.parent_doc_id.present? %><%= link_to "Previous Versions", previous_versions_matter_document_path(:matter_id => document.matter_id, :id => document.id) , {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'}%><% end %></td>
+					</tr>										
+					<% end %>
+				</tbody>
+			</table>
+		</div><!--/span-->
+	</div><!--/row-->
+
+
+
+
+<div id="modal-window" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<div id="dropzone" class="fade well">Drop files here or click to select files<br>Allowed File Types : jpg ,jpeg ,gif ,png ,pdf ,doc ,docx ,xls ,xlsx ,ppt ,pptx ,txt</div>
+<%= form_for [@matter, @document], :html => {:multipart => true} do |f| %>
+  
+<!-- The fileinput-button span is used to style the file input field as button -->
+<span class="btn btn-success fileinput-button hidden">
+  <i class="glyphicon glyphicon-plus"></i>
+  <span>Select files...</span>
+  <!-- The file input field used as target for the file upload widget -->
+  <%= f.file_field :doc, :multiple => true %>
+</span>
+
+<% end %>
+
+<div id="progress" class="progress">
+  <div class="progress-bar progress-bar-success"></div>
+</div>
+
+
+<% content_for :inlinescript do %>
+<script>
+$(function () {
+    'use strict';
+    // Change this to the location of your server-side upload handler:
+    var url = '<%=matter_documents_path(@matter.id)%>';
+    $('#document_doc').fileupload({
+        dropZone: $('#dropzone'),
+        url: url,
+        sequentialUploads: true,
+        dataType: 'json',
+        done: function (e, data) {
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            if (progress == 100)
+              location.reload()
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+});
+$("#dropzone").click(function(){
+  $("#document_doc").trigger("click")
+})
+$(document).bind('dragover', function (e)
+{
+    var dropZone = $('.dropzone'),
+        foundDropzone,
+        timeout = window.dropZoneTimeout;
+        if (!timeout)
+        {
+            dropZone.addClass('in');
+        }
+        else
+        {
+            clearTimeout(timeout);
+        }
+        var found = false,
+        node = e.target;
+
+        do{
+
+            if ($(node).hasClass('dropzone'))
+            {
+                found = true;
+                foundDropzone = $(node);
+                break;
+            }
+
+            node = node.parentNode;
+
+        }while (node != null);
+
+        dropZone.removeClass('in hover');
+
+        if (found)
+        {
+            foundDropzone.addClass('hover');
+        }
+
+        window.dropZoneTimeout = setTimeout(function ()
+        {
+            window.dropZoneTimeout = null;
+            dropZone.removeClass('in hover');
+        }, 100);
+    });
+</script>
+<style>
+#dropzone {
+  background: none repeat scroll 0 0 #FFFFFF;
+  font-weight: bold;
+  height: 100px;
+  line-height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  width: 95%;
+}
+#dropzone.in {
+    width: 600px;
+    height: 200px;
+    line-height: 200px;
+    font-size: larger;
+}
+#dropzone.hover {
+    background: lawngreen;
+}
+#dropzone.fade {
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    opacity: 1;
+}
+</style>
+<% end %>
