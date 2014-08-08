@@ -49,6 +49,3 @@ gem 'exception_notification'
 # Deploy with Capistrano
 gem 'capistrano', '~> 3.1'
 gem 'capistrano-bundler', '~> 1.1.2'
-
-ruby '2.0.0'
-
