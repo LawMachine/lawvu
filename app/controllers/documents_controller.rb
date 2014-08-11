@@ -6,21 +6,8 @@ class DocumentsController < ApplicationController
     @document = Document.new
     @documents = @matter.documents.where("latest_version = true").order("created_at desc")
   end
-<<<<<<< HEAD
-  
-  def create
-  	@doc = Document.new(params[:doc])
-  	respond_to do |format| 
-  		if @doc.save
-  			format.html { redirect_to @doc, notice: 'Document was successfully created.' } 
-  			#format.json {
-         #data = {id: @doc.id, thumb: view_context.image_tag(@doc.doc.url(:thumb))}
-         #render json: data, status: :created, location: @doc
-  			}
-      else
-        format.html { render action: "new" }
-        #format.json { render json: @doc.errors, status: :unprocessable_entity }
-=======
+
+
 
   def create
     @document = @matter.documents.new
@@ -134,7 +121,7 @@ class DocumentsController < ApplicationController
         @parent_doc.destroy
       else
         @document.destroy
->>>>>>> c51c81db927f5d170e30c5b06c4f94f3147af6d6
+
       end
       respond_to do |format| 
         format.html { redirect_to matter_documents_path(:matter_id => params[:matter_id])  } 
