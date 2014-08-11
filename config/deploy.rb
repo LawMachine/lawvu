@@ -1,11 +1,11 @@
 
+
 # config valid only for Capistrano 3.1
 lock '3.2.1'
 invoke :production
-
 set :application, 'lawvu'
 set :repo_url, 'git@github.com:LawMachine/lawvu.git'
-server '50.116.56.223', user: 'root', port: 22 , roles: %w{web app db},  ssh_options: {keys: %w{~/.ssh/id_rsa}, forward_agent: true, auth_methods: %w(publickey)}
+server '50.116.56.223', user: 'root', port: 22 , roles: %w{web app db}#,  ssh_options: {keys: %w{~/.ssh/id_rsa}, forward_agent: true, auth_methods: %w(publickey)}
 set :stages, ["production"]
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
@@ -17,7 +17,7 @@ set :stages, ["production"]
  set :scm, :git
 
 # Default value for :format is :pretty
-# set :format, :pretty
+# set :format, :prettyf1.8
 
 # Default value for :log_level is :debug
  set :log_level, :debug
@@ -36,8 +36,6 @@ set :stages, ["production"]
 
 # Default value for keep_releases is 5
  set :keep_releases, 5
-
-#before 'deploy', 'rvm:install:gems' 
 
 namespace :deploy do
 
