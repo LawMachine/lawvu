@@ -47,5 +47,5 @@ gem 'carrierwave', "~> 0.9.0"
 gem "mini_magick", "~>3.6.0"
 gem 'exception_notification'
 # Deploy with Capistrano
-gem 'capistrano', '~> 3.1'
+gem 'capistrano'
 gem 'capistrano-bundler', '~> 1.1.2'
