@@ -35,7 +35,7 @@ set :stages, ["production"]
 # Default value for keep_releases is 5
  set :keep_releases, 5
 
-before 'deploy', 'rvm:install:gems' 
+#before 'deploy', 'rvm:install:gems' 
 
 namespace :deploy do
 
