@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   
   
 
+  
+
   devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations", :sessions => "sessions", :passwords=>"passwords", :unlocks=>"unlocks"}, :path => "", :path_names => { :sign_out => 'logout', :edit => 'change_password'}
   devise_scope :user do
     match 'forgot_password' => 'passwords#new', :as=>"forgot_password", :via=>[:get]
@@ -37,6 +39,10 @@ Rails.application.routes.draw do
     collection do
       get 'search_lawyers'
       get 'search_clients'
+    end
+  end
+  resources :tasks do
+    member do
     end
   end
   root to: "homes#index"

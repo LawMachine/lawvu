@@ -43,6 +43,8 @@
 // });
 
 //= require bootstrap.min
+// require fuelux.tree-sampledata
+//= require fuelux.tree.min 
 //= require jquery-ui-1.10.3.custom.min
 //= require jquery.ui.touch-punch.min
 //= require chosen.jquery.min
