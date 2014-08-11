@@ -1,6 +1,8 @@
+require 'bundler/capistrano' 
 # config valid only for Capistrano 3.1
 lock '3.2.1'
 invoke :production
+
 set :application, 'lawvu'
 set :repo_url, 'git@github.com:LawMachine/lawvu.git'
 server '50.116.56.223', user: 'root', port: 22 , roles: %w{web app db},  ssh_options: {keys: %w{~/.ssh/id_rsa}, forward_agent: true, auth_methods: %w(publickey)}
