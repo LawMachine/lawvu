@@ -78,6 +78,22 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
+  LawvU::Application.config.middleware.use ExceptionNotification::Rack,
+   :email => {
+     :email_prefix => "Exception Details: ",
+     :sender_address => ENV['LAWVU_MAILER_SENDER'],
+     :exception_recipients => %w{gagan@idifysolutions.com bhimasen@idifysolutions.com},
+     :delivery_method => :smtp,
+     :smtp_settings => {
+      :address => ENV['LAWVU_MAILER_ADDRESS'],
+      :port => 587,
+      :domain => ENV['LAWVU_MAILER_DOMAIN'],
+      :user_name => ENV['LAWVU_MAILER_USERNAME'] ,
+      :password => ENV['LAWVU_MAILER_PWD'],
+      :authentication => "plain"
+     }
+   }
+   
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
   config.action_mailer.default_url_options = { host: '50.116.56.223:3600' }
