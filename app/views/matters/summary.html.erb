@@ -65,7 +65,7 @@
         </div>
         <div class="span7"></div>
         <div class="span2">
-        <button type="button" class="btn btn-primary pull-right" data-toggle="button">Add Task</button>
+        <%= link_to "Add Task",  add_task_matter_tasks_path(:matter_id=>@matter.id), :class=>"btn btn-primary pull-right"%>
         </div>
       </div>
     

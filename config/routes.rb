@@ -27,6 +27,11 @@ Rails.application.routes.draw do
         get 'download'
       end
     end
+    resources :tasks do
+      collection do
+        get 'add_task'
+      end
+    end
     member do
       get 'accept'
       get 'summary'
@@ -41,9 +46,11 @@ Rails.application.routes.draw do
       get 'search_clients'
     end
   end
-  resources :tasks do
-    member do
-    end
-  end
+  # resources :tasks do
+  #   member do
+  #     get 'add_task'
+  #   end
+  # end
+  
   root to: "homes#index"
 end
