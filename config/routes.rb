@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   
 
+  #get 'matter_tasks/index'
+
   devise_for :users, :controllers => {:registrations => "registrations", :confirmations => "confirmations", :sessions => "sessions", :passwords=>"passwords", :unlocks=>"unlocks"}, :path => "", :path_names => { :sign_out => 'logout', :edit => 'change_password'}
   devise_scope :user do
     match 'forgot_password' => 'passwords#new', :as=>"forgot_password", :via=>[:get]
@@ -32,6 +34,13 @@ Rails.application.routes.draw do
         get 'add_task'
       end
     end
+    resources :matter_tasks do
+
+      collection do
+        get 'autocomplete'
+        get 'autocomplete_tag_name'
+      end
+    end
     member do
       get 'accept'
       get 'summary'
@@ -46,11 +55,7 @@ Rails.application.routes.draw do
       get 'search_clients'
     end
   end
-  # resources :tasks do
-  #   member do
-  #     get 'add_task'
-  #   end
-  # end
+  
   
   root to: "homes#index"
 end

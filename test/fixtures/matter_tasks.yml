@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  matter_id: 1
+  task_id: 1
+  assigned_to_user_id: 1
+  due_date: 2014-08-12
+  task_fee_estimate: 9.99
+
+two:
+  matter_id: 1
+  task_id: 1
+  assigned_to_user_id: 1
+  due_date: 2014-08-12
+  task_fee_estimate: 9.99

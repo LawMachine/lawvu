@@ -44,6 +44,7 @@
 
 //= require bootstrap.min
 // require fuelux.tree-sampledata
+//= require jquery.ui.autocomplete
 //= require fuelux.tree.min 
 //= require jquery-ui-1.10.3.custom.min
 //= require jquery.ui.touch-punch.min
@@ -51,3 +52,8 @@
 //= require jquery.ui.widget
 //= require jquery.iframe-transport
 //= require jquery.fileupload
+
+
+
+
+

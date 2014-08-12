@@ -19,6 +19,7 @@ class TasksController < ApplicationController
 
   def new
     @task = Task.find(params[:id])
+    @users = User.all.collect(&:email)
     respond_to do |format|
       format.html
       format.js

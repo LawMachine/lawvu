@@ -1,0 +1,127 @@
+<div class="row-fluid">
+  <!--PAGE CONTENT BEGINS HERE-->
+
+  <div class="widget-box span6">
+  	<div class="widget-header header-color-blue2">
+  		<h4 class="lighter smaller">Available Tasks</h4>
+  	</div>
+
+  	<div class="widget-body">
+  		<div class="widget-main padding-8">
+  			<div id="tree1" class="tree"></div>
+  		</div>
+  	</div>
+  </div>
+  <div class="widget-box span6">
+    <div class="widget-header header-color-blue2">
+      <h4 class="lighter smaller">Selected Tasks</h4>
+    </div>
+
+    <div class="widget-body">
+      <div class="widget-main padding-8">
+        <div id="tree2" class="tree"></div>
+      </div>
+    </div>
+  </div>
+
+  
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  
+  <script type="text/javascript">
+    var $assets = "assets";//this will be used in fuelux.tree-sampledata.js
+  </script>
+
+  <!--PAGE CONTENT ENDS HERE-->
+</div><!--/row-->
+<div id="modal-window" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+
+<% content_for :inlinescript do %>
+<script type="text/javascript">
+ 
+    $(function(){
+      
+    $('#tree1').ace_tree({
+
+      dataSource: treeDataSource ,
+      multiSelect:true,
+      loadingHTML:'<div class="offset1"><i class="icon-refresh icon-spin blue"></i></div>',
+      'open-icon' : 'icon-minus',
+      'close-icon' : 'icon-plus',
+      'selectable' : true,
+      'selected-icon' : '',
+      'unselected-icon' : ''
+    });
+
+   });
+
+  
+  var DataSourceTree = function(options) {
+  this._data  = options.data;
+  this._delay = options.delay;
+}
+
+DataSourceTree.prototype.data = function(options, callback) {
+  var self = this;
+  var $data = null;
+
+  if(!("name" in options) && !("type" in options)){
+    $data = this._data;//the root tree
+    callback({ data: $data });
+    return;
+  }
+  else if("type" in options && options.type == "folder") {
+    if("additionalParameters" in options && "children" in options.additionalParameters)
+      $data = options.additionalParameters.children;
+    else $data = {}//no data
+  }
+  
+  if($data != null)//this setTimeout is only for mimicking some random delay
+    setTimeout(function(){callback({ data: $data });} , parseInt(Math.random() * 500) + 200);
+
+  //you can retrieve your data from a server using ajax call
+};
+
+  var tree_data = {
+  <% @tasks.each do |t|%>
+   <% if @parent_ids.include?(t.id)%>
+     <% @typee = 'folder'%>
+   <% else %>
+     <% @typee = 'item'%>
+   <% end %>
+    <% if @tasks.last == t %>
+      <% if @typee == 'item' %>
+       '<%= t.task %>' : {name: '<%= link_to t.task, new_matter_task_path(:matter_id=>@matter.id, :id => t.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'}%>', type: '<%= @typee%>'}
+      <% else %>
+       '<%= t.task %>' : {name: '<%= t.task%>', type: '<%= @typee%>'}
+      <% end %>
+    <% else %>
+      <% if @typee == 'item' %>
+       '<%= t.task %>' : {name: '<%= link_to t.task, new_matter_task_path(:matter_id=>@matter.id, :id => t.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'}%>', type: '<%= @typee%>'},
+      <% else %>
+       '<%= t.task %>' : {name: '<%= t.task%>', type: '<%= @typee%>'},
+      <% end %>
+    <% end %>
+  <% end %>
+ 
+}
+
+<% @child_tasks.each do |t|%>
+<% @parent_name = (Task.find(t.parent_id)).task%>
+tree_data['<%= @parent_name%>']['additionalParameters'] = {
+  'children' : {
+  <% if @child_tasks.last == t %>
+  '<%= t.task %>' : {name: '<%= link_to t.task, new_matter_task_path(:matter_id=>@matter.id, :id => t.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'}%>', type: 'item'}
+  <% else %>
+    '<%= t.task %>' : {name: '<%= link_to t.task, new_matter_task_path(:matter_id=>@matter.id, :id => t.id), {:remote => true, 'data-toggle' =>  "modal", 'data-target' => '#modal-window'}%>', type: 'item'},
+  <% end %>
+  }
+}
+<% end %>
+
+
+
+var treeDataSource = new DataSourceTree({data: tree_data});
+
+    
+</script>
+<% end %>

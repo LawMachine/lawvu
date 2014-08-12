@@ -30,6 +30,7 @@ class MattersController < ApplicationController
   
   def index
   end
+
   
   def show
     @current_page = "Matter Details"

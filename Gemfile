@@ -50,4 +50,6 @@ gem 'exception_notification'
 gem 'capistrano'
 gem 'capistrano-bundler', '~> 1.1.2'
 gem 'capistrano-rails'
+gem 'jquery-ui-rails', '4.1.1'
+#gem 'rails3-jquery-autocomplete'
 
