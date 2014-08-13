@@ -45,6 +45,10 @@ Rails.application.routes.draw do
       get 'accept'
       get 'summary'
     end
+    collection do
+      get 'autocomplete_user_name'
+      get 'autocomplete_lawyer_name'
+    end
   end
   resources :profiles do
     member do

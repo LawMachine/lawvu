@@ -52,6 +52,10 @@
 //= require jquery.ui.widget
 //= require jquery.iframe-transport
 //= require jquery.fileupload
+//= require bootstrap-datepicker
+//= require chosen.jquery.min
+// require jquery-ui
+// require autocomplete-rails
 
 
 

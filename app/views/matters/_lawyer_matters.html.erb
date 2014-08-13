@@ -13,7 +13,7 @@
   <% matters.each do |matter| %>
     <tr>
       <td><%=matter['issue']%></td>
-      <td><%=matter.client.full_name%></td>
+      <td><%=matter.client.full_name if matter.client.present? %></td>
       <td><%=matter['type']%></td>
       <td><%=JSON.parse(ENV["MATTER_STATUS"])[matter['status']]%></td>
       <td><%=matter['expected_completion_date']%></td>

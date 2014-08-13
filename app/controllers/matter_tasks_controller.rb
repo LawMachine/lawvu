@@ -1,5 +1,12 @@
 class MatterTasksController < ApplicationController
+  
+  
+	
   def index
+  end
+
+  def create
+  	#raise params.inspect
   end
 
   def autocomplete
@@ -14,10 +21,11 @@ class MatterTasksController < ApplicationController
 
   def autocomplete_tag_name
   	#users = User.order([:email]).where("email LIKE ?", "%#{params[:email]}%")
-   	users = User.select([:email]).where("email LIKE ?", "%#{params[:email]}%")
-    result = users.collect do |t|
-      { user_email: t.email }
+  	#raise params.inspect
+   	@users = User.where("email LIKE ?", "%#{params[:email]}%")
+        
+    respond_to do |format|
+      format.html { render :layout => false }
     end
-    render json: result
   end 
 end

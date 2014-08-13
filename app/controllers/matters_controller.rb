@@ -7,7 +7,7 @@ class MattersController < ApplicationController
   end
   
   def create
-    @current_page = "New Matter"
+    @current_page = "New Matter" 
     params[:matter][:user_id] = current_user.id
     if current_user.roleable_type == "Client"
       params[:matter][:client_id] = current_user.roleable_id
@@ -30,7 +30,25 @@ class MattersController < ApplicationController
   
   def index
   end
+  
+  def autocomplete_user_name
+    
+    @users = User.where("roleable_type = ? and email LIKE ? ", "Client","%#{params[:email]}%" )
+    #raise @user.inspect
+      
+    respond_to do |format|
+      format.html { render :layout => false }
+    end 
+  end
 
+  def autocomplete_lawyer_name
+    @users = User.where("roleable_type = ? and email LIKE ? ", "Lawyer","%#{params[:email]}%" )
+   
+      
+    respond_to do |format|
+      format.html { render :layout => false }
+    end 
+  end 
   
   def show
     @current_page = "Matter Details"

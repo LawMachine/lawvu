@@ -1,0 +1,23 @@
+<script>
+ $(".display_box").on("click",function(e){ 
+      var $clicked = $(e.target);
+      var email = $(this).find('.name').html();
+      
+      $('#matter_task_assigned_to_user_id').val(email);
+      $("#result").fadeOut(); 
+    });
+    $(document).on("click", function(e) { 
+        var $clicked = $(e.target);
+        if (! $clicked.hasClass("search")){
+          $("#result").fadeOut(); 
+        }
+    });
+</script>
+
+<%@users.each do |u| %>
+<div class="display_box">
+ 
+ <span class="name"><%= u.email %></span>
+  
+ </div>
+<% end %>
