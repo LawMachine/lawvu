@@ -7,14 +7,17 @@ class MattersController < ApplicationController
   end
   
   def create
+    
     @current_page = "New Matter" 
     params[:matter][:user_id] = current_user.id
     if current_user.roleable_type == "Client"
+      params[:matter][:lawyer_id] = User.find(params[:matter][:lawyer_id]).roleable_id
       params[:matter][:client_id] = current_user.roleable_id
       params[:matter][:status] = 0
       params[:matter][:pending_at] = "lawyer"
       @matter = Matter.new(client_matter_params)
     else
+      params[:matter][:client_id] = User.find(params[:matter][:client_id]).roleable_id
       params[:matter][:lawyer_id] = current_user.roleable_id
       params[:matter][:status] = 0
       params[:matter][:pending_at] = "client"
@@ -31,25 +34,7 @@ class MattersController < ApplicationController
   def index
   end
   
-  def autocomplete_user_name
-    
-    @users = User.where("roleable_type = ? and email LIKE ? ", "Client","%#{params[:email]}%" )
-    #raise @user.inspect
-      
-    respond_to do |format|
-      format.html { render :layout => false }
-    end 
-  end
-
-  def autocomplete_lawyer_name
-    @users = User.where("roleable_type = ? and email LIKE ? ", "Lawyer","%#{params[:email]}%" )
-   
-      
-    respond_to do |format|
-      format.html { render :layout => false }
-    end 
-  end 
-  
+ 
   def show
     @current_page = "Matter Details"
     @matter = Matter.find(params[:id])
@@ -65,10 +50,12 @@ class MattersController < ApplicationController
     @current_page = "Edit Matter"
     @matter = Matter.find(params[:id])
     if current_user.roleable_type == "Client"
+      params[:matter][:lawyer_id] = User.find(params[:matter][:lawyer_id]).roleable_id
       params[:matter][:status] = 0
       params[:matter][:pending_at] = "lawyer"
       @matter.update_attributes(client_matter_params)
     else
+      params[:matter][:client_id] = User.find(params[:matter][:client_id]).roleable_id
       params[:matter][:status] = 1
       params[:matter][:pending_at] = "client"
       @matter.update_attributes(lawyer_matter_params)
@@ -84,9 +71,37 @@ class MattersController < ApplicationController
 
   def summary
     @current_page = "Matter Summary"
+    @matter_tasks = MatterTask.all
     @matter = Matter.find(params[:id])
     @documents = @matter.documents.limit(6)
     @lawyer = Lawyer.find(@matter.lawyer_id)
+  end
+
+  def matter_users
+    
+    @users = User.where("email LIKE ?", "%#{params[:q]}%")
+    
+    respond_to do |format|
+      format.html{render :layout => false }
+      format.json { render :json => @users.map(&:attributes), :layout => false }
+    end
+  end
+
+  def matter_clients
+    @clients = User.where("roleable_type = ? and email LIKE ? ", "Client","%#{params[:q]}%" )
+    respond_to do |format|
+      format.html{render :layout => false }
+      format.json { render :json => @clients.map(&:attributes), :layout => false }
+    end
+  end
+
+  def matter_lawyers
+    @lawyers = User.where("roleable_type = ? and email LIKE ? ", "Lawyer","%#{params[:q]}%" )
+    respond_to do |format|
+      format.html{render :layout => false }
+      format.json { render :json => @lawyers.map(&:attributes), :layout => false }
+    end
+    
   end
   
   private

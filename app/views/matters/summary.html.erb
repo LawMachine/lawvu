@@ -87,33 +87,17 @@
         </thead>
 
         <tbody>
-        
+        <% @matter_tasks.each do |matter_task|%>
+        <% @task = Task.find(matter_task.task_id)%>
+        <% @user = User.find(matter_task.assigned_to_user_id) if matter_task.assigned_to_user_id.present?%>
           <tr>
-          
-
-            <td>Sign engagement letter</td>
-            <td>doc</td>
-            <td class="hidden-480">client name </td>
-            <td class="hidden-phone">complete</td>
+            <td><%= @task.task %></td>
+            <td>-</td>
+            <td class="hidden-480"><%= @user.email%> </td>
+            <td class="hidden-phone">-</td>
             <td>-</td>
           </tr> 
-          <tr>
-     
-
-            <td>Setup company</td>
-            <td>action</td>
-            <td class="hidden-480">lawyer's name</td>
-            <td class="hidden-phone">1/4 task complete</td>
-            <td>12/07/14</td>
-          </tr> 
-          <tr>
-
-            <td>Trans title</td>
-            <td>action</td>
-            <td class="hidden-480">laywer's name</td>
-            <td class="hidden-phone">1/6 task complete</td>
-            <td>14/07/14</td>
-          </tr>                                   
+          <% end %>
           
         </tbody>
       </table>

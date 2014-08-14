@@ -13,7 +13,7 @@
   	</div>
   </div>
   <div class="widget-box span6">
-    <div class="widget-header header-color-blue2">
+    <div class="widget-header header-color-green2">
       <h4 class="lighter smaller">Selected Tasks</h4>
     </div>
 
@@ -43,6 +43,18 @@
     $('#tree1').ace_tree({
 
       dataSource: treeDataSource ,
+      multiSelect:true,
+      loadingHTML:'<div class="offset1"><i class="icon-refresh icon-spin blue"></i></div>',
+      'open-icon' : 'icon-minus',
+      'close-icon' : 'icon-plus',
+      'selectable' : true,
+      'selected-icon' : '',
+      'unselected-icon' : ''
+    });
+
+    $('#tree2').ace_tree({
+
+      dataSource: treeDataSource2 ,
       multiSelect:true,
       loadingHTML:'<div class="offset1"><i class="icon-refresh icon-spin blue"></i></div>',
       'open-icon' : 'icon-minus',
@@ -121,6 +133,29 @@ tree_data['<%= @parent_name%>']['additionalParameters'] = {
 
 
 var treeDataSource = new DataSourceTree({data: tree_data});
+
+
+// var tree_data_2 = {
+//   'pictures' : {name: 'Pictures', type: 'folder'} ,
+//   'music' : {name: 'Music', type: 'folder'} ,
+//   'video' : {name: 'Video', type: 'folder'} ,
+//   'documents' : {name: 'Documents', type: 'folder'} ,
+//   'backup' : {name: 'Backup', type: 'folder'}
+  
+// }
+var tree_data_2 = {
+  <% @matter_tasks.each do |t|%>
+   <% @task = Task.find(t.task_id)%>
+    <% if @matter_tasks.last == t %>
+    '<%= @task.task %>' : {name: '<%= @task.task%>', type: 'item'}
+    <% else %>
+    '<%= @task.task %>' : {name: '<%= @task.task%>', type: 'item'},
+    <% end %>
+  <% end %>
+
+}
+
+var treeDataSource2 = new DataSourceTree({data: tree_data_2});
 
     
 </script>

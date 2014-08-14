@@ -222,7 +222,7 @@
                             <label>
                               <span class="block input-icon input-icon-right">
                         
-                                <%= f.input :roleable_type, :as=>"radio_buttons", :collection=>["Client","Lawyer"], required: true, autofocus: true, :label=>"Sign Up As", :wrapper_html=>{:class=>"signupas"} %>
+                                <%= f.input :roleable_type, :collection=>["Client","Lawyer"], required: true, autofocus: true, :label=>"Sign Up As", :wrapper_html=>{:class=>"signupas"}, :selected => "Client" %>
                               </span>
                             </label>
                             <label>
@@ -282,6 +282,9 @@
     layout
     label{
       margin-bottom: 0px;
+    }
+    select{
+      width: 300px;
     }
     </style>
     <!--page specific plugin scripts-->

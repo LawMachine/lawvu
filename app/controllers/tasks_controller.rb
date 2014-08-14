@@ -9,6 +9,7 @@ class TasksController < ApplicationController
   end
 
   def add_task
+    @matter_tasks = MatterTask.all
     @tasks = Task.where(parent_id: nil)
     @child_tasks = Task.where("parent_id IS NOT NULL")
     @parent_ids = []
@@ -20,6 +21,7 @@ class TasksController < ApplicationController
   def new
     @task = Task.find(params[:id])
     @users = User.all.collect(&:email)
+    #@users = User.all
     respond_to do |format|
       format.html
       format.js

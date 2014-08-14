@@ -1,57 +1,22 @@
 
 <style>
-  #result {
-position: absolute;
-width: 304px;
-display: none;
-margin-top: -3px;
-border: solid 1px #dedede;
-border-top: 0px;
-overflow: hidden;
-border-bottom-right-radius: 3px;
-border-bottom-left-radius: 3px;
--moz-border-bottom-right-radius: 3px;
--moz-border-bottom-left-radius: 3px;
-box-shadow: 0px 2px 0px rgba(0,0,0,0.1);
-border-color: #e5e6e9 #dfe0e4 #d0d1d5!important;
-border-width: 3px 1px 1px;
-background-color: white;
-}
-.display_box{
-    padding:7px;
-    border-top: solid 1px #e3e8e8;
-    width: 100%!important;
-    border-left: none!important;
-    margin: 0!important;
-    height: 20px;
-}
-.display_box:hover{
-  background-color:#f9f9f9!important;
-  cursor:pointer!important;
-}
+ 
+
 </style>
 <script>
- 
-  $(function() {
-  return $('#matter_task_assigned_to_user_id').autocomplete({
-    minLength: 2,
-    source: function(request, response) {
-      return $.ajax({
-        url: $('.tags_with_autocomplete').data('autocompleteurl'),
-        dataType: "html",
-        data: {
-          email: request.term
-        },
-        success: function(data) {
-         $("#result").html(data).show();
-          
-        }
-      });
-    }
+
+$(function () {
+   $('#matter_task_assigned_to_user_id').tokenInput('/matters/matter_users.json', { 
+    crossDomain: false,
+    propertyToSearch : "email",
+    theme: "facebook",
+    tokenLimit: 1
+    //prePopulate: $('#matter_task_assigned_to_user_id').data('pre')
   });
 
-   
-})
+});
+
+
   
 </script>
 
@@ -62,14 +27,13 @@ background-color: white;
 <div class="modal-body">
   <div class="row-fluid">
     <div class="span12">
-    <%= simple_form_for MatterTask.new, :url =>  matter_matter_tasks_path(:matter_id => @matter.id), :method  => :post do |f| %>
+    <%= simple_form_for MatterTask.new, :url =>  matter_matter_tasks_path(:matter_id => @matter.id, :task_id => @task.id), :method  => :post do |f| %>
       <div class="form-inputs">
        Task: <%= @task.task%>
       </div>
       <div class="form-inputs">
       
-       <%= f.input :assigned_to_user_id, as: :string, input_html: {value: '', class: 'tags_with_autocomplete', 'data-autocompleteUrl' => autocomplete_tag_name_matter_matter_tasks_path
-  }%>
+      <%= f.input :assigned_to_user_id, :input_html => { :rows => 5 }, "data-pre" => @users.to_json %>
       </div>
       <div id="result" style="overflow:auto;">
       </div>

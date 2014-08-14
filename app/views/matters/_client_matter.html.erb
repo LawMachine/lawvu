@@ -1,57 +1,19 @@
 <style>
-  #result_lawyer {
-position: absolute;
-width: 304px;
-display: none;
-margin-top: -3px;
-border: solid 1px #dedede;
-border-top: 0px;
-overflow: hidden;
-border-bottom-right-radius: 3px;
-border-bottom-left-radius: 3px;
--moz-border-bottom-right-radius: 3px;
--moz-border-bottom-left-radius: 3px;
-box-shadow: 0px 2px 0px rgba(0,0,0,0.1);
-border-color: #e5e6e9 #dfe0e4 #d0d1d5!important;
-border-width: 3px 1px 1px;
-background-color: white;
-}
-.display_box{
-    padding:7px;
-    border-top: solid 1px #e3e8e8;
-    width: 100%!important;
-    border-left: none!important;
-    margin: 0!important;
-    height: 20px;
-}
-.display_box:hover{
-  background-color:#f9f9f9!important;
-  cursor:pointer!important;
-}
+ 
 </style>
 <% content_for :inlinescript do %>
 <script>
  
-  $(function() {
-  return $('#matter_lawyer_id').autocomplete({
-    minLength: 2,
-    source: function(request, response) {
-      return $.ajax({
-        url: $('.lawyer_with_autocomplete').data('autocompleteurl'),
-        dataType: "html",
-        data: {
-          email: request.term
-        },
-        success: function(data) {
-         $("#result_lawyer").html(data).show();
-          
-        }
-      });
-    }
+$(function () {
+   $('#matter_lawyer_id').tokenInput('/matters/matter_lawyers.json', { 
+    crossDomain: false,
+    propertyToSearch : "email",
+    theme: "facebook",
+    tokenLimit: 1
+    
   });
 
-   
-})
+});
   
 </script>
 <% end %>
@@ -61,9 +23,8 @@ background-color: white;
   <%= f.error_notification %>
 
   <div class="form-inputs">
-    <%#= f.input :lawyer_id, autofocus: true, :label=>"Choose your Lawyer (Enter their name or email address)" %>
-    <%= f.input :lawyer_id, as: :string, input_html: {value: '', class: 'lawyer_with_autocomplete', 'data-autocompleteUrl' => autocomplete_lawyer_name_matters_path
-  }%>
+    
+  <%= f.input :lawyer_id, "data-pre" => @lawyers.to_json %>
   </div>
 
   <div id="result_lawyer" style="overflow:auto;"></div>

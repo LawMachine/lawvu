@@ -54,8 +54,12 @@
 //= require jquery.fileupload
 //= require bootstrap-datepicker
 //= require chosen.jquery.min
+//= require jquery.tokeninput
 // require jquery-ui
 // require autocomplete-rails
+
+
+
 
 
 

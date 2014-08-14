@@ -46,8 +46,9 @@ Rails.application.routes.draw do
       get 'summary'
     end
     collection do
-      get 'autocomplete_user_name'
-      get 'autocomplete_lawyer_name'
+      get 'matter_users'
+      get 'matter_clients'
+      get 'matter_lawyers'
     end
   end
   resources :profiles do
